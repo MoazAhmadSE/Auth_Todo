@@ -10,16 +10,22 @@ export default function Signup() {
   const [userExist, setUserExist] = useState(false);
   const [validPassword, setValidPassword] = useState(true);
   const [passwordDidMAtch, setPasswordDidMatch] = useState(true);
-  const { userName, setUserName, userPassword, setUserPassword, confirmUserPassword, setConfirmUserPassword } = useUserInfo();
+  const {
+    userName,
+    setUserName,
+    userPassword,
+    setUserPassword,
+    confirmUserPassword,
+    setConfirmUserPassword,
+  } = useUserInfo();
 
-  
-  useEffect(()=>{
+  useEffect(() => {
     return () => {
-        setUserName("");
-        setUserPassword("");
-        setConfirmUserPassword("");
+      setUserName("");
+      setUserPassword("");
+      setConfirmUserPassword("");
     };
-  },[])
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,7 +36,13 @@ export default function Signup() {
     } else if (userPassword != confirmUserPassword) {
       setPasswordDidMatch(false);
     } else if (userPassword === confirmUserPassword) {
-      localStorage.setItem(userName, userPassword);
+      localStorage.setItem(
+        userName,
+        JSON.stringify({
+          password: userPassword,
+          todoList: { todo: [], completed: [] },
+        })
+      );
       console.log("Sucessfully Signup");
       navigate("/");
     }
