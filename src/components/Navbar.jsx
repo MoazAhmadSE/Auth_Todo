@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { Logout } from "./Logout";
+import { Logout } from "./LogoutAndDelete";
 import { Title } from "./Title";
 
 
