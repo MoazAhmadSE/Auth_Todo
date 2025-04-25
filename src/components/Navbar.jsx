@@ -1,4 +1,7 @@
+import { Button } from "./Button";
+import { Logout } from "./Logout";
 import { Title } from "./Title";
+
 
 export const Navbar = () => {
   return (
@@ -9,6 +12,7 @@ export const Navbar = () => {
       <h3 className="tw-text-myYellow tw-w-full tw-flex tw-justify-end tw-p-5 tw-relative tw-font-bold">
         Username:&nbsp;
         {sessionStorage.getItem("username")?.toUpperCase()}
+        <Logout />
       </h3>
     </div>
   );

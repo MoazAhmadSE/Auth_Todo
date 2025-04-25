@@ -60,7 +60,7 @@ export default function Signup() {
             name={"userName"}
           />
           {userExist && (
-            <div className="tw-text-red-500 tw-text-[1.3vw]">
+            <div className="tw-text-red-500 tw-text-[1vw]">
               Username already Exists..
             </div>
           )}
@@ -70,7 +70,7 @@ export default function Signup() {
             name={"userPassword"}
           />
           {!validPassword && (
-            <div className="tw-text-red-500 tw-text-[1.3vw]">
+            <div className="tw-text-red-500 tw-text-[1vw]">
               Password must me greater then 5 chracters.
             </div>
           )}
@@ -80,7 +80,7 @@ export default function Signup() {
             name={"confirmUserPassword"}
           />
           {!passwordDidMAtch && (
-            <div className="tw-text-red-500 tw-text-[1.3vw]">
+            <div className="tw-text-red-500 tw-text-[1vw]">
               Password and Confirm Password not matched.
             </div>
           )}
