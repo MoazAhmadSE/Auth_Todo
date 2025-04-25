@@ -3,7 +3,7 @@ import { useUserInfo } from "../context/UserContext";
 
 export const Input = ({ inputType, inputPlaceHolder, name }) => {
   const { userName, setUserName, userPassword, setUserPassword, confirmUserPassword, setConfirmUserPassword } = useUserInfo();
-  const { task, settask } = useAddTask();
+  const { task, setTask } = useAddTask();
   const getValue = () => {
     if(name === "userName") return userName;
     if(name === "userPassword") return userPassword;
@@ -15,7 +15,7 @@ export const Input = ({ inputType, inputPlaceHolder, name }) => {
     if (name === "userName") setUserName(e.target.value);
     if (name === "userPassword") setUserPassword(e.target.value);
     if (name === "confirmUserPassword") setConfirmUserPassword(e.target.value);
-    if (name === "addTasks") settask(e.target.value);
+    if (name === "addTasks") setTask(e.target.value);
   };
   return (
     <input

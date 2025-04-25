@@ -8,7 +8,7 @@ export const Navbar = () => {
       </div>
       <h3 className="tw-text-myYellow tw-w-full tw-flex tw-justify-end tw-p-5 tw-relative tw-font-bold">
         Username:&nbsp;
-        {sessionStorage.getItem("username").toUpperCase()}
+        {sessionStorage.getItem("username")?.toUpperCase()}
       </h3>
     </div>
   );
