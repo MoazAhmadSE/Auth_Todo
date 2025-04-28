@@ -1,21 +1,16 @@
 import { Input } from "./Input";
 import { Button } from "./Button";
 import { useAddTask } from "../context/TasksContext";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../features/todoList/TodoListSlice";
 
 export const AddTasks = () => {
   const { task, setTask } = useAddTask();
+  const dispatch = useDispatch()
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = sessionStorage?.getItem("username");
-    console.log(user);
-    const userData = JSON.parse(localStorage.getItem(user));
-    console.log(userData);
-    console.log(task);
-    if (user && task) {
-      console.log("Task ADDED");
-      userData.todoList.todo.push(task.trim());
-      console.log(userData);
-      localStorage.setItem(user, JSON.stringify(userData));
+    if (task) {
+      dispatch(addTodo(task));
       setTask("");
     }
   };

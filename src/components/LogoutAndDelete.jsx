@@ -1,30 +1,28 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faL,
-  faRightFromBracket,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { Button } from "./Button";
-import { Title } from "./Title";
-import { useState } from "react";
+import { useSelector } from "react-redux";
+
 
 export const Logout = () => {
   const navigate = useNavigate();
-//   const [confirm, setConfirm] = useState(false);
+  const user = sessionStorage.getItem("username");
+  const userdata = JSON.parse(localStorage.getItem(user));
+  const todoTask = useSelector((state) => state.todoList.todo);
+  const completedTask = useSelector((state) => state.todoList.completed);
+
   const handleLogout = () => {
+    userdata.todoList.todo = todoTask;
+    userdata.todoList.completed = completedTask;
+    localStorage.setItem(user, JSON.stringify(userdata));
     sessionStorage.clear();
     navigate("/");
   };
-  const deleteAccount = () => {
-    const username = sessionStorage.getItem("username");
-    console.log(username);
-    const userData = JSON.parse(localStorage.getItem(username));
-    console.log(userData);
-    if (username && userData) {
-      localStorage.removeItem(username);
-      handleLogout();
-    }
+  const deleteAccount = async () => {
+    console.log(user);
+    localStorage.removeItem(user);
+    sessionStorage.clear();
+    navigate('/');
   };
   return (
     <div>

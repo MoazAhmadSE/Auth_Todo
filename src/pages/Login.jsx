@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { Title } from "../components/Title";
-import { Navigate } from "react-router-dom";
 import { useUserInfo } from "../context/UserContext";
 import { useEffect, useState } from "react";
 
