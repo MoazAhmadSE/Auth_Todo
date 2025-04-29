@@ -86,7 +86,7 @@ export default function Signup() {
           )}
           <Button text={"Login"} type="submit" />
         </form>
-        <div className="tw-flex tw-w-full tw-flex-nowrap tw-text-[1.3vw]">
+        <div className="tw-flex tw-w-full tw-flex-nowrap tw-text-[1vw]">
           <h3>Already have an Account?</h3>
           <Link to={"/"} className="tw-text-myYellow tw-underline tw-ml-1 ">
             Sign in

@@ -18,7 +18,7 @@ export const Delete = () => {
       <FontAwesomeIcon
         onClick={deleteAccount}
         icon={faTrash}
-        className="tw-text-myDark tw-my-auto hover:tw-text-myYellow hover:tw-scale-125 tw-duration-300"
+        className="tw-text-slate-300 tw-my-auto hover:tw-text-myYellow hover:tw-scale-125 tw-duration-300"
         title="Delete Account"
       />
       {/* {confirm && (

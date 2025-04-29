@@ -24,7 +24,7 @@ export const Logout = () => {
       <FontAwesomeIcon
         onClick={handleLogout}
         icon={faRightFromBracket}
-        className="tw-text-myDark tw-my-auto tw-mx-2 hover:tw-text-myYellow hover:tw-scale-125 tw-duration-300"
+        className="tw-text-slate-300 tw-my-auto tw-mx-2 hover:tw-text-myYellow hover:tw-scale-125 tw-duration-300"
         title="Logout"
       />
     </div>
