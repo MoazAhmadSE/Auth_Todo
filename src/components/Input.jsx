@@ -1,4 +1,4 @@
-import { useAddTask } from "../context/useTasksContext";
+import { useAddTask } from "../context/TasksContext";
 import { useUserInfo } from "../context/useUserContext";
 
 export const Input = ({ inputType, inputPlaceHolder, name }) => {
