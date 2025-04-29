@@ -1,23 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 
-export const Logout = () => {
+export const Delete = () => {
   const navigate = useNavigate();
   const user = sessionStorage.getItem("username");
-  const userdata = JSON.parse(localStorage.getItem(user));
-  const todoTask = useSelector((state) => state.todoList.todo);
-  const completedTask = useSelector((state) => state.todoList.completed);
 
-  const handleLogout = () => {
-    userdata.todoList.todo = todoTask;
-    userdata.todoList.completed = completedTask;
-    localStorage.setItem(user, JSON.stringify(userdata));
-    sessionStorage.clear();
-    navigate("/");
-  };
   const deleteAccount = async () => {
     console.log(user);
     localStorage.removeItem(user);
@@ -26,12 +15,6 @@ export const Logout = () => {
   };
   return (
     <div>
-      <FontAwesomeIcon
-        onClick={handleLogout}
-        icon={faRightFromBracket}
-        className="tw-text-myDark tw-my-auto tw-mx-2 hover:tw-text-myYellow hover:tw-scale-125 tw-duration-300"
-        title="Logout"
-      />
       <FontAwesomeIcon
         onClick={deleteAccount}
         icon={faTrash}

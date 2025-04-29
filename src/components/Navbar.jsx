@@ -1,6 +1,7 @@
 import { Button } from "./Button";
-import { Logout } from "./LogoutAndDelete";
+import { Logout } from "./Logout";
 import { Title } from "./Title";
+import { Delete } from "./Delete";
 
 
 export const Navbar = () => {
@@ -13,6 +14,7 @@ export const Navbar = () => {
         Username:&nbsp;
         {sessionStorage.getItem("username")?.toUpperCase()}
         <Logout />
+        <Delete />
       </h3>
     </div>
   );

@@ -16,13 +16,11 @@ export default {
     function ({ addUtilities }) {
       addUtilities({
         '.no-scrollbar': {
-          /* For Webkit Browsers (Chrome, Safari) */
           '&::-webkit-scrollbar': {
             display: 'none',
           },
-          /* For Firefox and others */
-          '-ms-overflow-style': 'none',     // IE and Edge
-          'scrollbar-width': 'none',        // Firefox
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
         },
       });
     },

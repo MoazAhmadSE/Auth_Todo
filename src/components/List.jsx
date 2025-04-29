@@ -19,7 +19,7 @@ export const List = () => {
     dispatch(deleteTodo({ index }));
   };
   const handleDeleteComplete = (index) => {
-    dispatch(deleteComplete({ index }));
+    dispatch(deleteComplete({ index }));  
   };
 
   const handleCompleteTodo = (index, completeTask) => {

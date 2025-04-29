@@ -4,10 +4,8 @@ const TaskContext = createContext();
 
 export const TaskProvider = ( { children } ) => {
     const [ task, setTask ] = useState("");
-    const [ todo, setTodo ] = useState([]);
-    const [ completedTask, setCompletedTask ] = useState([]);
     return(
-        <TaskContext.Provider value={{ task, setTask, todo, setTodo, completedTask, setCompletedTask }}>
+        <TaskContext.Provider value={{ task, setTask }}>
             {children}
         </TaskContext.Provider>
     )
