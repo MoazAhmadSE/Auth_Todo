@@ -44,7 +44,6 @@ export const List = () => {
         {todoTask.length > 0 && (
           <div>
             <div className="tw-flex tw-justify-center">
-              <Title title={"Todo"} />
             </div>
             <ul>
               {todoTask.map((todoTask, index) => (
