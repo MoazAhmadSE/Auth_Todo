@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Title } from "../components/Title";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
-import { useUserInfo } from "../context/UserContext";
+import { useUserInfo } from "../context/useUserContext";
 import { useEffect, useState } from "react";
 
 export default function Signup() {

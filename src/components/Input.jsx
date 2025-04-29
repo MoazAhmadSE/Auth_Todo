@@ -1,5 +1,5 @@
-import { useAddTask } from "../context/TasksContext";
-import { useUserInfo } from "../context/UserContext";
+import { useAddTask } from "../context/useTasksContext";
+import { useUserInfo } from "../context/useUserContext";
 
 export const Input = ({ inputType, inputPlaceHolder, name }) => {
   const { userName, setUserName, userPassword, setUserPassword, confirmUserPassword, setConfirmUserPassword } = useUserInfo();
