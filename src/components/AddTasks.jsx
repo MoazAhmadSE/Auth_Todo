@@ -1,5 +1,5 @@
 import { Input } from "./Input";
-import { Button } from "./Button";
+import Button from "./Button";
 import { useAddTask } from "../context/useTasksContext";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../features/todoList/TodoListSlice";

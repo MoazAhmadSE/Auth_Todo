@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Title } from "../components/Title";
 import { Input } from "../components/Input";
-import { Button } from "../components/Button";
+import Button from "../components/Button";
 import { useUserInfo } from "../context/useUserContext";
 import { useEffect, useState } from "react";
 
@@ -84,7 +84,7 @@ export default function Signup() {
               Password and Confirm Password not matched.
             </div>
           )}
-          <Button text={"Login"} type="submit" />
+          <Button text={"Create"} type="submit" />
         </form>
         <div className="tw-flex tw-w-full tw-flex-nowrap tw-text-[1vw]">
           <h3>Already have an Account?</h3>
