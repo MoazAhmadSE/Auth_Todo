@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { persistor } from "../app/store";
+import {createUserStore} from "../app/store";
 
 export const Delete = () => {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export const Delete = () => {
 
   const deleteAccount = async () => {
     console.log(user);
-    persistor.purge();
+    createUserStore(user).persistor.purge();
     localStorage.removeItem(user);
     sessionStorage.clear();
     navigate('/');
