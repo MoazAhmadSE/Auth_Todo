@@ -11,16 +11,15 @@ export default function Login() {
   const { userName, setUserName, userPassword, setUserPassword } = useUserInfo();
   
   const handleSubmit = (e) => {
-    const storedUser = JSON.parse(localStorage.getItem(userName));
-    const storedUserPassword = JSON.parse(localStorage.getItem(userName)).password;
-    console.log(storedUser);
-    console.log(storedUserPassword);
     e.preventDefault();
+    const storedUser = JSON.parse(localStorage?.getItem(userName));
+    const storedUserPassword = JSON.parse(localStorage?.getItem(userName))?.password;
     if (storedUser && storedUserPassword === userPassword) {
       console.log("Login Sucessfully Sucessfully");
       sessionStorage.setItem("username", userName);
       navigate("/home");
     } else {
+      console.log("Sign in true");
       setSignInError(true);
     }
   };

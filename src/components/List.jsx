@@ -14,12 +14,11 @@ export const List = () => {
   const todoTask = useSelector((state) => state.todoList.todo);
   const completedTask = useSelector((state) => state.todoList.completed);
 
-
   const handleDeleteTodo = (index) => {
     dispatch(deleteTodo({ index }));
   };
   const handleDeleteComplete = (index) => {
-    dispatch(deleteComplete({ index }));  
+    dispatch(deleteComplete({ index }));
   };
 
   const handleCompleteTodo = (index, completeTask) => {
@@ -28,16 +27,21 @@ export const List = () => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("username");
-    const userdata = JSON.parse(localStorage.getItem(user));
-    if (userdata) {
-      dispatch(
-        setUserTasks({
-          todo: userdata.todoList.todo,
-          completed: userdata.todoList.completed,
-        })
-      );
+    const isInitialized = sessionStorage?.getItem("isInitialized");
+    if (!isInitialized) {
+      const userdata = JSON.parse(localStorage.getItem(user));
+      if (userdata) {
+        dispatch(
+          setUserTasks({
+            todo: userdata.todoList.todo,
+            completed: userdata.todoList.completed,
+          })
+        );
+      }
+      sessionStorage.setItem("isInitialized", "true");
     }
   }, []);
+
   return (
     <div className="tw-w-screen tw-h-screen">
       <div className="tw-bg-transparent tw-border-2 tw-border-slate-600 tw-w-[40%] tw-mx-auto tw-rounded-lg tw-p-5 tw-h-[70%] tw-no-scrollbar tw-overflow-auto">
