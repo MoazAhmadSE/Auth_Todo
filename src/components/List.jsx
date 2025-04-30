@@ -27,8 +27,9 @@ export const List = () => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("username");
-    const isInitialized = sessionStorage?.getItem("isInitialized");
-    if (!isInitialized) {
+    const isInitialized = sessionStorage.getItem("isInitialized");
+    const isPersister = localStorage.getItem(`persist:${user}`);
+    if (!isInitialized && !isPersister) {
       const userdata = JSON.parse(localStorage.getItem(user));
       if (userdata) {
         dispatch(
