@@ -31,7 +31,7 @@ export default function Login() {
     },[])
   return (
     <div className="tw-bg-myDark tw-min-h-screen tw-min-w-full tw-flex tw-justify-center tw-items-center">
-      <div className="tw-text-slate-100 tw-border-2 tw-p-10 tw-rounded-2xl tw-border-myYellow tw-w-[30%] tw-items-center tw-flex tw-flex-col">
+      <div className="tw-text-slate-100 tw-border-2 tw-p-10 tw-rounded-2xl tw-border-myYellow md:tw-w-[40%] lg:tw-w-[30%] sm:tw-w-[95%] tw-items-center tw-flex tw-flex-col">
         <Title title={"Login"} />
         <hr className="tw-border-2 tw-border-myYellow tw-w-full tw-my-5" />
         <form onSubmit={handleSubmit}>

@@ -3,19 +3,34 @@ import { Logout } from "./Logout";
 import { Title } from "./Title";
 import { Delete } from "./Delete";
 
-
 export const Navbar = () => {
   return (
     <div>
-      <div className="tw-flex tw-justify-evenly tw-items-center tw-bg-slate-900 tw-py-3 tw-w-full  tw-absolute">
-        <Title title={"Todo List"} />
+      <div className="sm:tw-block md:tw-hidden lg:tw-hidden">
+        <div className="tw-flex tw-flex-col tw-w-screen tw-bg-slate-900">
+          <div className="tw-flex tw-justify-evenly tw-items-center  tw-py-1 tw-w-full">
+            <Title title={"Todo List"} />
+          </div>
+          <h3 className="tw-text-myYellow tw-w-full tw-flex tw-justify-center  tw-font-bold">
+            Username:&nbsp;
+            {sessionStorage.getItem("username")?.toUpperCase()}
+            <Logout />
+            <Delete />
+          </h3>
+        </div>
       </div>
-      <h3 className="tw-text-myYellow tw-w-full tw-flex tw-justify-end tw-p-5 tw-relative tw-font-bold">
-        Username:&nbsp;
-        {sessionStorage.getItem("username")?.toUpperCase()}
-        <Logout />
-        <Delete />
-      </h3>
+
+      <div className="sm:tw-hidden md:tw-block lg:tw-block">
+        <div className="tw-flex tw-justify-evenly tw-items-center tw-bg-slate-900 tw-py-3 tw-w-full  tw-absolute">
+          <Title title={"Todo List"} />
+        </div>
+        <h3 className="tw-text-myYellow tw-w-full tw-flex tw-justify-end tw-p-5 tw-relative tw-font-bold">
+          Username:&nbsp;
+          {sessionStorage.getItem("username")?.toUpperCase()}
+          <Logout />
+          <Delete />
+        </h3>
+      </div>
     </div>
   );
 };
