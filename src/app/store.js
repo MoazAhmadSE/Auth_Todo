@@ -13,6 +13,7 @@ export function createUserStore(username) {
     const persistConfig = {
         key: username,
         storage,
+        whitelist:['todoList']
     }
 
     const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -44,7 +44,7 @@ export const List = () => {
 
   return (
     <div className="tw-w-screen tw-h-screen">
-      <div className="tw-bg-transparent tw-border-2 tw-border-slate-600 tw-w-[40%] tw-mx-auto tw-rounded-lg tw-p-5 tw-h-[70%] tw-no-scrollbar tw-overflow-auto">
+      <div className="tw-bg-transparent tw-border-2 tw-border-slate-600 md:tw-w-[40%] lg:tw-w-[40%] sm:tw-w-[95%] tw-mx-auto tw-rounded-lg tw-p-5 tw-h-[70%] tw-no-scrollbar tw-overflow-auto">
         {todoTask.length > 0 && (
           <div>
             <div className="tw-flex tw-justify-center">

@@ -18,7 +18,7 @@ export const AddTasks = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="tw-flex tw-gap-x-5 tw-items-center tw-w-[40%] tw-m-auto"
+      className="tw-flex tw-gap-x-5 tw-items-center md:tw-w-[40%] lg:tw-w-[40%] sm:tw-w-[95%] tw-m-auto"
     >
       <div className="tw-w-[79%] ">
         <Input
