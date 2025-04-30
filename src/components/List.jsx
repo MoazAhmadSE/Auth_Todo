@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-// import { useAddTask } from "../context/TasksContext";
+import { useAddTask } from "../context/useTasksContext";
 import { Title } from "./Title";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -7,9 +7,11 @@ import {
   deleteComplete,
   deleteTodo,
   setUserTasks,
+  editTodo
 } from "../features/todoList/TodoListSlice";
 
 export const List = () => {
+  const { task, setTask } = useAddTask();
   const dispatch = useDispatch();
   const todoTask = useSelector((state) => state.todoList.todo);
   const completedTask = useSelector((state) => state.todoList.completed);
@@ -24,6 +26,13 @@ export const List = () => {
   const handleCompleteTodo = (index, completeTask) => {
     dispatch(addComplete({ index: index, addTaskCompleted: completeTask }));
   };
+
+  const handleEditTodo = (index) => {
+    if(!task){
+      setTask(todoTask[index]);
+      dispatch(editTodo({ index }));
+    }
+  }
 
   useEffect(() => {
     const user = sessionStorage.getItem("username");
@@ -60,13 +69,20 @@ export const List = () => {
                   <input
                     className="tw-accent-myYellow"
                     type="checkbox"
-                    onClick={() => handleCompleteTodo(index, todoTask)}
+                    onChange={() => handleCompleteTodo(index, todoTask)}
+                    checked={false}
                   />
                   <h3 className="tw-text-left tw-flex-1 tw-text-wrap tw-text-slate-100">
                     {todoTask}
                   </h3>
                   <button
-                    className="tw-text-myYellow hover:tw-underline hover:tw-scale-110 tw-duration-200"
+                    className="tw-text-slate-500 hover:tw-underline hover:tw-scale-110 tw-duration-200 hover:tw-text-myYellow"
+                    onClick={() => handleEditTodo(index)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="tw-text-slate-500 hover:tw-underline hover:tw-scale-110 tw-duration-200 hover:tw-text-red-600"
                     onClick={() => handleDeleteTodo(index)}
                   >
                     Delete

@@ -19,7 +19,6 @@ export default function Login() {
       sessionStorage.setItem("username", userName);
       navigate("/home");
     } else {
-      console.log("Sign in true");
       setSignInError(true);
     }
   };

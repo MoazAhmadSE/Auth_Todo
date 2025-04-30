@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useAddTask } from "../../context/useTasksContext";
 
 const initialState = {
     todo: [],
     completed: [],
 };
-
 
 export const TodoListSlice = createSlice({
     name: "todoList",
@@ -24,6 +24,10 @@ export const TodoListSlice = createSlice({
         deleteComplete: (state, action) => {
             state.completed.splice(action.payload.index, 1);
         },
+        editTodo: (state , action) => {
+            const { index } = action.payload;
+            state.todo.splice(index, 1);
+        },
         setUserTasks: (state, action) => {
             const { todo, completed } = action.payload;
             state.todo = todo;
@@ -31,7 +35,7 @@ export const TodoListSlice = createSlice({
         },
     },
 });
-export const { addTodo, addComplete, deleteTodo, deleteComplete, setUserTasks } = TodoListSlice.actions;
+export const { addTodo, addComplete, deleteTodo, deleteComplete, setUserTasks, editTodo } = TodoListSlice.actions;
 export default TodoListSlice.reducer;
 
 
