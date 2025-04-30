@@ -6,7 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./context/useUserContext.jsx";
 import { TaskProvider } from "./context/useTasksContext.jsx";
 import { Provider } from "react-redux";
-import store from "./app/store.js";
+import { store, persistor } from "./app/store.js";
+import { PersistGate } from "redux-persist/integration/react";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById("root")).render(
     <UserProvider>
       <TaskProvider>
         <Provider store={store}>
-          <App />
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+          </PersistGate>
         </Provider>
       </TaskProvider>
     </UserProvider>
