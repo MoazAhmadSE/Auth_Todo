@@ -1,4 +1,3 @@
-import { Button } from "./Button";
 import { Logout } from "./Logout";
 import { Title } from "./Title";
 import { Delete } from "./Delete";

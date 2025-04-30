@@ -1,4 +1,6 @@
-export const Button = ({ text, type }) => {
+import React from "react";
+
+const Button = ({ text, type }) => {
   return (
     <button
         type={type} 
@@ -7,3 +9,4 @@ export const Button = ({ text, type }) => {
     </button>
   );
 };
+export default React.memo(Button);
