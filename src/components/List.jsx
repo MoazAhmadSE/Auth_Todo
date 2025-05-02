@@ -10,6 +10,7 @@ import {
   editTodo
 } from "../features/todoList/TodoListSlice";
 import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 export const List = () => {
   const { task, setTask } = useAddTask();
