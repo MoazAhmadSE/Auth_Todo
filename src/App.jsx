@@ -1,15 +1,13 @@
-import AppRouters from "./router/AppRoutes"
-
+import AppRouters from "./router/AppRoutes";
 
 function App() {
-
   return (
     <>
       <div className=" tw-max-h-screen tw-overflow-hidden">
-      <AppRouters/>
+        <AppRouters />
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

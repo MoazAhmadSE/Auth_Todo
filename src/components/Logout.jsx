@@ -3,6 +3,7 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {createUserStore} from "../app/store";
+import { toast } from "react-toastify";
 
 export const Logout = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export const Logout = () => {
     localStorage.setItem(user, JSON.stringify(userdata));
     sessionStorage.clear();
     navigate("/");
+    toast.info("Logout Sucessfully!")
   };
   
   return (

@@ -4,6 +4,7 @@ import { Input } from "../components/Input";
 import Button from "../components/Button";
 import { useUserInfo } from "../context/useUserContext";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ export default function Signup() {
       );
       console.log("Sucessfully Signup");
       navigate("/");
+      toast.success("Account Created Sucessfully!")
     }
   };
 
@@ -80,13 +82,13 @@ export default function Signup() {
             name={"confirmUserPassword"}
           />
           {!passwordDidMAtch && (
-            <div className="tw-text-red-500 tw-text-[1vw]">
+            <div className="tw-text-red-500 md:tw-text-[1vw] lg:tw-text-[1vw]">
               Password and Confirm Password not matched.
             </div>
           )}
           <Button text={"Create"} type="submit" />
         </form>
-        <div className="tw-flex tw-w-full tw-flex-nowrap tw-text-[1vw]">
+        <div className="tw-flex tw-w-full tw-flex-nowrap md:tw-text-[1vw] lg:tw-text-[1vw] ">
           <h3>Already have an Account?</h3>
           <Link to={"/"} className="tw-text-myYellow tw-underline tw-ml-1 ">
             Sign in

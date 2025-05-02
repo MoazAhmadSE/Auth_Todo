@@ -9,6 +9,7 @@ import {
   setUserTasks,
   editTodo
 } from "../features/todoList/TodoListSlice";
+import { toast } from 'react-toastify';
 
 export const List = () => {
   const { task, setTask } = useAddTask();
@@ -31,6 +32,8 @@ export const List = () => {
     if(!task){
       setTask(todoTask[index]);
       dispatch(editTodo({ index }));
+    } else {
+      toast.error("Clear the Previous Input First!");
     }
   }
 

@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import {createUserStore} from "../app/store";
+import { toast } from "react-toastify";
 
 export const Delete = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export const Delete = () => {
     localStorage.removeItem(user);
     sessionStorage.clear();
     navigate('/');
+    toast.info("Account Deleted Sucessfully!");
   };
   return (
     <div>

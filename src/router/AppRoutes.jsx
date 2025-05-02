@@ -8,10 +8,10 @@ import UserReduxWrapper from '../components/UserReduxWrapper'
 export default function AppRouters() {
     return( 
         <Routes>
-            <Route path='*' element={< Page404 />} />
             <Route path='/' element={ < Login />} />
             <Route path='/signup' element={< Signup />} /> 
             <Route path='/home' element={ <UserReduxWrapper> < Home /> </UserReduxWrapper> } />
+            <Route path='*' element={< Page404 />} />
         </Routes>
     )
 } 
