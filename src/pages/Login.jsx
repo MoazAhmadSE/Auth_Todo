@@ -45,13 +45,13 @@ export default function Login() {
             name={"userPassword"}
           />
           {signinError && (
-            <div className="tw-text-red-500 tw-text-[1.3vw]">
+            <div className="tw-text-red-500 md:tw-text-[1vw] lg:tw-text-[1vw]">
               Incorrect Username or Password.
             </div>
           )}
           <Button text={"Login"} type="submit" />
         </form>
-        <div className="tw-flex tw-w-full tw-flex-nowrap tw-text-[1vw]">
+        <div className="tw-flex tw-w-full tw-flex-nowrap md:tw-text-[1vw] lg:tw-text-[1vw]">
           <h3>Didn't have any Account?</h3>
           <Link
             to={"/signup"}
