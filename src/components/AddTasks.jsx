@@ -1,35 +1,37 @@
 import { Input } from "./Input";
 import Button from "./Button";
-import { useAddTask } from "../context/useTasksContext";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../features/todoList/TodoListSlice";
+import { useState } from "react";
 
 export const AddTasks = () => {
-  const { task, setTask } = useAddTask();
-  const dispatch = useDispatch()
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const [ task, setTask ] = useState('');
+  const dispatch = useDispatch();
+  const handleSubmit = () => {
     if (task) {
       dispatch(addTodo(task));
-      setTask("");
+      setTask('');
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="tw-flex tw-gap-x-5 tw-items-center md:tw-w-[40%] lg:tw-w-[40%] sm:tw-w-[95%] tw-m-auto"
-    >
-      <div className="tw-w-[79%] ">
-        <Input
-          inputType={"text"}
-          inputPlaceHolder={"Enter Task Here"}
-          name={"addTasks"}
-        />
-      </div>
-      <div className="tw-w-[20%]">
-        <Button text={"Add"} type={"submit"} />
-      </div>
-    </form>
+    <div className="tw-flex tw-items-center tw-w-[100%] tw-mt-5">
+      <Input
+        className="tw-w-[80%] tw-text-slate-200 tw-bg-transparent tw-border tw-border-slate-600 tw-p-2 focus:tw-border-myYellow tw-rounded-xl tw-my-2 tw-outline-none tw-rounded-r-none"
+        type={"text"}
+        placeholder={"Enter Task Here"}
+        value={task}
+        onChange={(e) => {
+          setTask(e.target.value)
+        }}
+      />
+      <Button
+        className={
+          "tw-w-[20%] tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-2xl tw-py-2 tw-font-bold hover:tw-underline tw-duration-500 tw-rounded-l-none"
+        }
+        text={"Add"}
+        onClick={handleSubmit}
+      />
+    </div>
   );
 };

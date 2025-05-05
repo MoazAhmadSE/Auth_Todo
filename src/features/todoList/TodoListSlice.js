@@ -14,18 +14,17 @@ export const TodoListSlice = createSlice({
         },
         addComplete: (state, action) => {
             const { index, addTaskCompleted } = action.payload;
-            state.todo.splice(index, 1);
+            state.todo = state.todo.filter((task, i) => task !== addTaskCompleted && i !== index );
             state.completed.push(addTaskCompleted);
         },
         deleteTodo: (state, action) => {
-            state.todo.splice(action.payload.index, 1);
+            state.todo = state.todo.filter((_, i) => i !== action.payload.index);
         },
         deleteComplete: (state, action) => {
-            state.completed.splice(action.payload.index, 1);
+            state.completed = state.completed.filter((_, i) => i !== action.payload.index);
         },
         editTodo: (state , action) => {
-            const { index } = action.payload;
-            state.todo.splice(index, 1);
+            state.todo = state.todo.filter((_, i) => i !== action.payload.index);
         },
         setUserTasks: (state, action) => {
             const { todo, completed } = action.payload;

@@ -10,10 +10,8 @@ import {
   editTodo
 } from "../features/todoList/TodoListSlice";
 import { toast } from 'react-toastify';
-// import { toast } from 'react-toastify';
 
 export const List = () => {
-  const { task, setTask } = useAddTask();
   const dispatch = useDispatch();
   const todoTask = useSelector((state) => state.todoList.todo);
   const completedTask = useSelector((state) => state.todoList.completed);
@@ -30,20 +28,20 @@ export const List = () => {
   };
 
   const handleEditTodo = (index) => {
-    if(!task){
-      setTask(todoTask[index]);
-      dispatch(editTodo({ index }));
-    } else {
-      toast.error("Clear the Previous Input First!");
-    }
+    dispatch(editTodo({ index }));
+    // if(!task){
+    //   setTask(todoTask[index]);
+    // } else {
+    //   toast.error("Clear the Previous Input First!");
+    // }
   }
 
   useEffect(() => {
-    const user = sessionStorage.getItem("username");
-    const isInitialized = sessionStorage.getItem("isInitialized");
-    const isPersister = localStorage.getItem(`persist:${user}`);
-    if (!isInitialized && !isPersister) {
-      const userdata = JSON.parse(localStorage.getItem(user));
+    const user = sessionStorage?.getItem("username");
+    const isInitialized = sessionStorage?.getItem("isInitialized");
+    const isLogin = localStorage?.getItem("isLogin");
+    if (!isInitialized) {
+      const userdata = JSON.parse(localStorage?.getItem(user));
       if (userdata) {
         dispatch(
           setUserTasks({
@@ -57,12 +55,12 @@ export const List = () => {
   }, []);
 
   return (
-    <div className="tw-w-screen tw-h-screen">
-      <div className="tw-bg-transparent tw-border-2 tw-border-slate-600 md:tw-w-[40%] lg:tw-w-[40%] sm:tw-w-[95%] tw-mx-auto tw-rounded-lg tw-p-5 tw-h-[70%] tw-no-scrollbar tw-overflow-auto">
+    <div className="tw-w-[100%]">
+      <div className="tw-bg-transparent tw-border-2 tw-border-slate-600 tw-mx-auto tw-rounded-lg tw-p-5 tw-h-[70%] tw-no-scrollbar tw-overflow-auto">
         {todoTask.length > 0 && (
           <div>
             <div className="tw-flex tw-justify-center">
-              <Title title={"Todo"} />
+              <Title className="tw-text-myYellow tw-text-3xl tw-font-bold" title={"Todo"} />
             </div>
             <ul>
               {todoTask.map((todoTask, index) => (
@@ -100,10 +98,10 @@ export const List = () => {
         {completedTask.length > 0 && (
           <div>
             <div className="tw-flex tw-justify-center">
-              <Title title={"Done"} />
+              <Title className="tw-text-myYellow tw-text-3xl tw-font-bold" title={"Done"} />
             </div>
             <ul>
-              {completedTask.map((todoTask, index) => (
+              {completedTask?.map((todoTask, index) => (
                 <li
                   key={index}
                   className="tw-flex tw-justify-between tw-gap-x-3 tw-mt-3 tw-border tw-border-slate-400 tw-rounded-xl tw-p-4"

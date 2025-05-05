@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {createUserStore} from "../app/store";
 import { toast } from "react-toastify";
+import { persistor } from '../app/store';
 
 export const Logout = () => {
   const navigate = useNavigate();
@@ -15,8 +15,9 @@ export const Logout = () => {
   const handleLogout = () => {
     userdata.todoList.todo = todoTask;
     userdata.todoList.completed = completedTask;
-    createUserStore(user).persistor.purge();
+    persistor.purge();
     localStorage.setItem(user, JSON.stringify(userdata));
+    localStorage.removeItem("isLogin");
     sessionStorage.clear();
     navigate("/");
     toast.info("Logout Sucessfully!")

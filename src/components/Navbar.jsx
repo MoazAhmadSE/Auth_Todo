@@ -6,29 +6,31 @@ export const Navbar = () => {
   return (
     <div>
       <div className="sm:tw-block md:tw-hidden lg:tw-hidden">
-        <div className="tw-flex tw-flex-col tw-w-screen tw-bg-slate-900">
-          <div className="tw-flex tw-justify-evenly tw-items-center  tw-py-1 tw-w-full">
-            <Title title={"Todo List"} />
-          </div>
-          <h3 className="tw-text-myYellow tw-w-full tw-flex tw-justify-center  tw-font-bold">
-            Username:&nbsp;
-            {sessionStorage.getItem("username")?.toUpperCase()}
+        <div className="tw-min-w-full tw-flex tw-flex-col tw-bg-slate-900 tw-py-3 tw-items-center tw-justify-between tw-px-4">
+          <Title
+            className="tw-text-myYellow tw-text-4xl tw-font-bold"
+            title="Todo List"
+          />
+          <h3 className="tw-text-myYellow tw-flex tw-items-center tw-gap-2 tw-font-bold tw-pt-3">
+            Username:&nbsp;{sessionStorage.getItem("username")?.toUpperCase()}
             <Logout />
             <Delete />
           </h3>
         </div>
       </div>
 
-      <div className="sm:tw-hidden md:tw-block lg:tw-block">
-        <div className="tw-flex tw-justify-evenly tw-items-center tw-bg-slate-900 tw-py-3 tw-w-full  tw-absolute">
-          <Title title={"Todo List"} />
+      <div className="sm:tw-hidden md:tw-block">
+        <div className="tw-min-w-full tw-flex tw-bg-slate-900 tw-py-3 tw-items-center tw-justify-between tw-px-4 tw-border-b-2 tw-border-myYellow">
+          <Title
+            className="tw-text-myYellow tw-text-4xl tw-font-bold"
+            title="Todo List"
+          />
+          <h3 className="tw-text-myYellow tw-flex tw-items-center tw-gap-2 tw-font-bold">
+            Username:&nbsp;{sessionStorage.getItem("username")?.toUpperCase()}
+            <Logout />
+            <Delete />
+          </h3>
         </div>
-        <h3 className="tw-text-myYellow tw-w-full tw-flex tw-justify-end tw-p-5 tw-relative tw-font-bold">
-          Username:&nbsp;
-          {sessionStorage.getItem("username")?.toUpperCase()}
-          <Logout />
-          <Delete />
-        </h3>
       </div>
     </div>
   );

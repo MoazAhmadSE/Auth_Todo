@@ -1,8 +1,8 @@
 
 
-export const Title = ( { title } ) => {
+export const Title = ( { title, className } ) => {
     return(
-        <h1 className="tw-text-myYellow tw-text-3xl tw-font-bold">
+        <h1 className={className}>
             { title }
         </h1>
     )

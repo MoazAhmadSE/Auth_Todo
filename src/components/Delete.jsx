@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import {createUserStore} from "../app/store";
+import { persistor } from '../app/store';
 import { toast } from "react-toastify";
 
 export const Delete = () => {
@@ -10,8 +10,9 @@ export const Delete = () => {
 
   const deleteAccount = async () => {
     console.log(user);
-    createUserStore(user).persistor.purge();
+    persistor.purge();
     localStorage.removeItem(user);
+    localStorage.removeItem("isLogin");
     sessionStorage.clear();
     navigate('/');
     toast.info("Account Deleted Sucessfully!");

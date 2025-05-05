@@ -22,8 +22,21 @@ export default {
           '-ms-overflow-style': 'none',
           'scrollbar-width': 'none',
         },
+        '.input-style': {
+          width: '100%',
+          color: '#e2e8f0',
+          backgroundColor: 'transparent',
+          borderWidth: '2px',
+          // borderColor: '#475569',
+          padding: '0.5rem',
+          borderRadius: '0.75rem',
+          marginTop: '0.5rem',
+          marginBottom: '0.5rem',
+          outline: 'none',
+        },
       });
     },
+
   ],
 }
 
