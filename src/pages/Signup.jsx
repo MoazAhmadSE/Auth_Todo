@@ -4,6 +4,10 @@ import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Input } from "../components/Input";
+import { NewUser } from "../firebase/NewUser";
+import Loading from "../components/loading";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/FirebaseConfig";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -17,19 +21,29 @@ export default function Signup() {
   const [confirmUserPassword, setConfirmUserPassword] = useState("");
   const [isConfirmPasswordEmpty, setIsConfirmPasswordEmpty] = useState(false);
   const [passwordDidMAtch, setPasswordDidMatch] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [ findSimilarUsername, setfindSimilarUsername ] = useState(true);
 
   useEffect(() => {
-    if (localStorage.getItem(userName)) {
-      setUserExist(true);
-    } else {
-      setUserExist(false);
-    }
+    const checkUserExists = async () => {
+      if (userName) {
+        const user = doc(db, "users", userName);
+        const findUser = await getDoc(user);
+        await setfindSimilarUsername(false);
+        setUserExist(findUser.exists());
+      }
+    };
+    checkUserExists();
   }, [userName]);
+  if (loading) return <Loading />;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (userName === "") {
       setIsEmpty(true);
-    } else if (localStorage.getItem(userName)) {
+    }
+    // const user = doc(db, "users", userName);
+    // const findUser = await getDoc(user);
+    if (localStorage.getItem(userName)) {
       setUserExist(true);
     } else if (userPassword === "") {
       setIsPasswordEmpty(true);
@@ -40,27 +54,29 @@ export default function Signup() {
     } else if (userPassword != confirmUserPassword) {
       setPasswordDidMatch(false);
     } else if (userPassword === confirmUserPassword) {
-      localStorage.setItem(
-        userName,
-        JSON.stringify({
-          password: userPassword,
-          todoList: { todo: [], completed: [] },
-          isOnline: false,
-        })
-      );
-      console.log("Sucessfully Signup");
-      navigate("/");
-      toast.success(
-        `Account Created Successfully! Username: ${userName} Password: ${userPassword}`,
-        { autoClose: false }
-      );
+      try {
+        setLoading(true);
+        await NewUser({ username: userName, userpassword: userPassword });
+        setLoading(false);
+        navigate("/");
+        toast.success(
+          `Account Created Successfully! Username: ${userName} Password: ${userPassword}`,
+          { autoClose: false }
+        );
+      } catch (error) {
+        setLoading(false);
+        toast.error("Signup failed. Please try again. ", error);
+      }
     }
   };
 
   return (
     <div className="tw-bg-myDark tw-min-h-screen tw-min-w-full tw-flex tw-justify-center tw-items-center">
       <div className="tw-text-slate-100 tw-border-2 tw-p-10 tw-rounded-2xl tw-border-myYellow md:tw-w-[40%] lg:tw-w-[30%] sm:tw-w-[95%] tw-items-center tw-flex tw-flex-col">
-        <Title className="tw-text-myYellow tw-text-4xl tw-font-bold" title={"Sign Up"} />
+        <Title
+          className="tw-text-myYellow tw-text-4xl tw-font-bold"
+          title={"Sign Up"}
+        />
         <hr className="tw-border-2 tw-border-myYellow tw-w-full tw-my-5" />
         <div>
           <Input
@@ -122,10 +138,11 @@ export default function Signup() {
           )}
           <Button
             className={
-              "tw-w-[100%] tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-lg tw-text-lg tw-py-2 tw-font-bold hover:tw-underline tw-duration-500 tw-mt-4 tw-mb-2"
+              `tw-w-[100%] tw-border tw-rounded-lg tw-text-lg tw-py-2 tw-duration-500 tw-mt-4 tw-mb-2 ${findSimilarUsername ? "tw-bg-transparent tw-text-slate-300 tw-border-slate-600 hover:tw-cursor-not-allowed  " : "tw-bg-myYellow tw-border-myYellow tw-text-myDark hover:tw-underline tw-font-bold" }`
             }
             text={"Create"}
             onClick={handleSubmit}
+            disabled={findSimilarUsername}
           />
         </div>
         <div className="tw-flex tw-w-full tw-flex-nowrap md:tw-text-[1.5vw] lg:tw-text-[1vw] ">
