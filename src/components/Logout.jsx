@@ -15,6 +15,7 @@ export const Logout = () => {
   const handleLogout = () => {
     userdata.todoList.todo = todoTask;
     userdata.todoList.completed = completedTask;
+    userdata.isOnline = false ;
     persistor.purge();
     localStorage.setItem(user, JSON.stringify(userdata));
     localStorage.removeItem("isLogin");

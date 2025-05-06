@@ -9,7 +9,6 @@ export const Delete = () => {
   const user = sessionStorage.getItem("username");
 
   const deleteAccount = async () => {
-    console.log(user);
     persistor.purge();
     localStorage.removeItem(user);
     localStorage.removeItem("isLogin");

@@ -45,6 +45,7 @@ export default function Signup() {
         JSON.stringify({
           password: userPassword,
           todoList: { todo: [], completed: [] },
+          isOnline: false,
         })
       );
       console.log("Sucessfully Signup");

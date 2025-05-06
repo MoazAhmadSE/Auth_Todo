@@ -3,7 +3,7 @@ import Button from "../components/Button";
 import { Title } from "../components/Title";
 import { useEffect, useState } from "react";
 import { Input } from "../components/Input";
-import { persistor } from '../app/store';
+import { persistor } from "../app/store";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,7 +23,6 @@ export default function Login() {
     } else if (userPassword == "") {
       setIsPasswordEmpty(true);
     } else if (storedUser && storedUserPassword === userPassword) {
-      console.log("Login Sucessfully Sucessfully");
       sessionStorage.setItem("username", userName);
       localStorage.setItem("isLogin", userName);
       navigate("/home");
@@ -40,7 +39,7 @@ export default function Login() {
     if (isLogin && user) {
       sessionStorage.setItem("username", isLogin);
       navigate("/home");
-    } else if (isLogin && !user) {
+    } else if (isLogin && user.isOnline == false) {
       localStorage.removeItem("isLogin");
       persistor.purge();
     }
