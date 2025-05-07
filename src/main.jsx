@@ -7,23 +7,17 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { store, persistor } from './app/store.js';
 import { Provider } from 'react-redux'
-import { UserProvider } from "./context/useUserContext.jsx";
-import { TaskProvider } from "./context/useTasksContext.jsx";
 import { PersistGate } from "redux-persist/integration/react";
 
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
   <BrowserRouter>
-    <UserProvider>
-      <TaskProvider>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <App />
             <ToastContainer theme="dark" />
           </PersistGate>
         </Provider>
-      </TaskProvider>
-    </UserProvider>
   </BrowserRouter>
   // </StrictMode>
 );

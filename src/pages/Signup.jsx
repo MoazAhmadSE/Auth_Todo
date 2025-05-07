@@ -1,66 +1,66 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Title } from "../components/Title";
 import Button from "../components/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { Input } from "../components/Input";
+import { usePasswordValidation } from "../hooks/usePasswordValidation";
+import { useUserValidation } from "../hooks/useUserValidation";
 
 export default function Signup() {
   const navigate = useNavigate();
 
   const [userName, setUserName] = useState("");
-  const [isEmpty, setIsEmpty] = useState(false);
-  const [userExist, setUserExist] = useState(false);
   const [userPassword, setUserPassword] = useState("");
-  const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
-  const [validPassword, setValidPassword] = useState(true);
   const [confirmUserPassword, setConfirmUserPassword] = useState("");
-  const [isConfirmPasswordEmpty, setIsConfirmPasswordEmpty] = useState(false);
-  const [passwordDidMAtch, setPasswordDidMatch] = useState(true);
 
-  useEffect(() => {
-    if (localStorage.getItem(userName)) {
-      setUserExist(true);
-    } else {
-      setUserExist(false);
-    }
-  }, [userName]);
+  const { isEmpty, userExist, setIsEmpty } = useUserValidation(userName);
+  const {
+    isPasswordEmpty,
+    validPassword,
+    isConfirmPasswordEmpty,
+    passwordDidMAtch,
+    setIsPasswordEmpty,
+    setValidPassword,
+    setIsConfirmPasswordEmpty,
+    setPasswordDidMatch,
+    validate,
+  } = usePasswordValidation();
+
 
   const handleSubmit = () => {
     if (userName === "") {
       setIsEmpty(true);
-    } else if (localStorage.getItem(userName)) {
-      setUserExist(true);
-    } else if (userPassword === "") {
-      setIsPasswordEmpty(true);
-    } else if (userPassword.length < 6) {
-      setValidPassword(false);
-    } else if (confirmUserPassword === "") {
-      setIsConfirmPasswordEmpty(true);
-    } else if (userPassword != confirmUserPassword) {
-      setPasswordDidMatch(false);
-    } else if (userPassword === confirmUserPassword) {
-      localStorage.setItem(
-        userName,
-        JSON.stringify({
-          password: userPassword,
-          todoList: { todo: [], completed: [] },
-          isOnline: false,
-        })
-      );
-      console.log("Sucessfully Signup");
-      navigate("/");
-      toast.success(
-        `Account Created Successfully! Username: ${userName} Password: ${userPassword}`,
-        { autoClose: false }
-      );
+      return;
     }
+    if (userExist)  return;
+  
+    const passwordValid = validate(userPassword, confirmUserPassword);
+    if (!passwordValid) return;
+  
+    localStorage.setItem(
+      userName,
+      JSON.stringify({
+        password: userPassword,
+        todoList: { todo: [], completed: [] },
+        isOnline: false,
+      })
+    );
+    navigate("/");
+    toast.success(
+      `Account Created Successfully! Username: ${userName} Password: ${userPassword}`,
+      { autoClose: false }
+    );
   };
+  
 
   return (
     <div className="tw-bg-myDark tw-min-h-screen tw-min-w-full tw-flex tw-justify-center tw-items-center">
       <div className="tw-text-slate-100 tw-border-2 tw-p-10 tw-rounded-2xl tw-border-myYellow md:tw-w-[40%] lg:tw-w-[30%] sm:tw-w-[95%] tw-items-center tw-flex tw-flex-col">
-        <Title className="tw-text-myYellow tw-text-4xl tw-font-bold" title={"Sign Up"} />
+        <Title
+          className="tw-text-myYellow tw-text-4xl tw-font-bold"
+          title={"Sign Up"}
+        />
         <hr className="tw-border-2 tw-border-myYellow tw-w-full tw-my-5" />
         <div>
           <Input
