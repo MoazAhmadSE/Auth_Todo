@@ -4,8 +4,7 @@ import Button from "../components/Button";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Input } from "../components/Input";
-import { usePasswordValidation } from "../hooks/usePasswordValidation";
-import { useUserValidation } from "../hooks/useUserValidation";
+import { usePasswordValidation } from "../hooks/useSignupFormValidation";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -14,45 +13,42 @@ export default function Signup() {
   const [userPassword, setUserPassword] = useState("");
   const [confirmUserPassword, setConfirmUserPassword] = useState("");
 
-  const { isEmpty, userExist, setIsEmpty } = useUserValidation(userName);
   const {
+    isEmpty,
+    userExist,
     isPasswordEmpty,
     validPassword,
     isConfirmPasswordEmpty,
     passwordDidMAtch,
+    setIsEmpty,
     setIsPasswordEmpty,
     setValidPassword,
     setIsConfirmPasswordEmpty,
     setPasswordDidMatch,
     validate,
-  } = usePasswordValidation();
-
+  } = usePasswordValidation(userName);
 
   const handleSubmit = () => {
-    if (userName === "") {
-      setIsEmpty(true);
-      return;
-    }
-    if (userExist)  return;
-  
     const passwordValid = validate(userPassword, confirmUserPassword);
-    if (!passwordValid) return;
-  
-    localStorage.setItem(
-      userName,
-      JSON.stringify({
-        password: userPassword,
-        todoList: { todo: [], completed: [] },
-        isOnline: false,
-      })
-    );
-    navigate("/");
-    toast.success(
-      `Account Created Successfully! Username: ${userName} Password: ${userPassword}`,
-      { autoClose: false }
-    );
+    if (!passwordValid) {
+      return;
+    } else {
+      localStorage.setItem(
+        userName,
+        JSON.stringify({
+          password: userPassword,
+          todoList: { todo: [], completed: [] },
+          isOnline: false,
+        })
+      );
+      navigate("/");
+
+      toast.success(
+        `Account Created Successfully! Username: ${userName} Password: ${userPassword}`,
+        { autoClose: false }
+      );
+    }
   };
-  
 
   return (
     <div className="tw-bg-myDark tw-min-h-screen tw-min-w-full tw-flex tw-justify-center tw-items-center">

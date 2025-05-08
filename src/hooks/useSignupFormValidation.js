@@ -1,16 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
-export const usePasswordValidation = () => {
+export const usePasswordValidation = ( userName ) => {
     const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
     const [validPassword, setValidPassword] = useState(true);
     const [isConfirmPasswordEmpty, setIsConfirmPasswordEmpty] = useState(false);
     const [passwordDidMAtch, setPasswordDidMatch] = useState(true);
+    const [isEmpty, setIsEmpty] = useState(false);
+    const [userExist, setUserExist] = useState(false);
+
+    useEffect(() => {
+        if (localStorage.getItem(userName)) {
+            setUserExist(true);
+        } else {
+            setUserExist(false);
+        }
+    }, [userName])
 
     const validate = (password, confirmPassword) => {
         let isValid = true;
 
-        if (password === "") {
+        if (userName === "") {
+            setIsEmpty(true);
+            isValid = false;
+        } else if (userExist){
+            isValid = false;
+        } else if (password === "") {
             setIsPasswordEmpty(true);
             isValid = false;
         } else if (password.length < 6) {
@@ -22,7 +37,7 @@ export const usePasswordValidation = () => {
         } else if (password !== confirmPassword) {
             setPasswordDidMatch(false);
             isValid = false;
-        } else if(password === confirmPassword){
+        } else if (password === confirmPassword) {
             setPasswordDidMatch(true);
             isValid = true;
         }
@@ -31,10 +46,13 @@ export const usePasswordValidation = () => {
     };
 
     return {
+        isEmpty,
+        userExist,
         isPasswordEmpty,
         validPassword,
         isConfirmPasswordEmpty,
         passwordDidMAtch,
+        setIsEmpty,
         setIsPasswordEmpty,
         setValidPassword,
         setIsConfirmPasswordEmpty,
