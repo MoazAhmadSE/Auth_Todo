@@ -1,7 +1,7 @@
-import { db } from "./FirebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
+import { db } from "./firebaseConfig";
 
-export async function NewUser({ username, userpassword }) {
+export async function newUser({ username, userpassword }) {
     try {
         const userDoc = doc(db, 'users', username);
         await setDoc(userDoc, {
