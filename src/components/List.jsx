@@ -45,7 +45,7 @@ export const List = () => {
 
   useEffect(() => {
     const user = sessionStorage?.getItem("username");
-    const isLogin = localStorage?.getItem("isLogin");
+    // const isLogin = localStorage?.getItem("isLogin");
     const storedUser = JSON.parse(localStorage?.getItem(user));
     console.log(storedUser.isOnline);
     if (storedUser.isOnline == false ) {

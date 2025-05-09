@@ -5,7 +5,7 @@ import {
   faFacebook,
   faGithub,
 } from "@fortawesome/free-brands-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+// import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { Title } from "../components/Title";
 import Button from "../components/Button";
 import { useState } from "react";
@@ -21,6 +21,7 @@ import {
   GithubAuthProvider,
   FacebookAuthProvider,
   createUserWithEmailAndPassword,
+  sendEmailVerification,
 } from "firebase/auth";
 import { db, auth } from "../firebase/firebaseConfig";
 
@@ -30,10 +31,10 @@ export default function Signup() {
   const [userName, setUserName] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
   const [userExist, setUserExist] = useState(false);
-  const [userPassword, setUserPassword] = useState("");
+  const [userPassword, setUserPassword] = useState("123456");
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
   const [validPassword, setValidPassword] = useState(true);
-  const [confirmUserPassword, setConfirmUserPassword] = useState("");
+  const [confirmUserPassword, setConfirmUserPassword] = useState("123456");
   const [isConfirmPasswordEmpty, setIsConfirmPasswordEmpty] = useState(false);
   const [passwordDidMAtch, setPasswordDidMatch] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -74,13 +75,24 @@ export default function Signup() {
           console.log("Result: ", result);
           const user = result.user;
           console.log("Result: ", user.email);
-          const userDoc = await getDoc(doc(db, "users", user.email));
-          if (!userDoc.exists()) {
-            await newUser({
-              username: user.email.toLowerCase(),
-              userpassword: "OAuth",
-            });
+          await sendEmailVerification(user);
+          toast.info("Verification email sent. Please check your inbox.");
+          await auth.currentUser.reload();
+          console.log(user);
+          console.log("DONE 1");
+          if (auth.currentUser.emailVerified) {
+            const userDoc = await getDoc(doc(db, "users", user.email));
+            if (!userDoc.exists()) {
+              console.log(user);
+              await newUser({
+                username: user.email.toLowerCase(),
+                userpassword: "OAuth",
+              });
+            }
+          } else {
+            toast.warning("Please verify your email to continue.");
           }
+          console.log("DONE 2");
         } catch (error) {
           console.error("Sign-in error:", error);
           toast.error("Sign-in failed. Try again.");
@@ -117,7 +129,7 @@ export default function Signup() {
   return (
     <>
       <div className="tw-bg-myDark tw-min-h-screen tw-min-w-full tw-flex tw-justify-center tw-items-center">
-        <div className="tw-text-slate-100 tw-border-2 tw-p-10 tw-rounded-2xl tw-border-myYellow md:tw-w-[40%] lg:tw-w-[30%] sm:tw-w-[95%] tw-items-center tw-flex tw-flex-col">
+        <div className="tw-text-slate-100 tw-border-2 tw-p-10 tw-rounded-2xl tw-border-myYellow md:tw-w-[40%] lg:tw-w-[30%] sm:tw-w-[95%] tw-items-center tw-flex tw-flex-col ">
           <Title
             className="tw-text-myYellow tw-text-4xl tw-font-bold"
             title={"Sign Up"}
@@ -198,11 +210,11 @@ export default function Signup() {
           </div>
           <hr className="tw-border-2 tw-border-myYellow tw-w-full tw-my-5" />
           <div className="tw-flex tw-justify-between tw-w-full tw-mt-4">
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               icon={faEnvelope}
               className=" hover:tw-cursor-pointer "
               size="2x"
-            />
+            /> */}
             <FontAwesomeIcon
               onClick={handleGoogleAuth}
               icon={faGoogle}
