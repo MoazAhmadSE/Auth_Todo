@@ -4,27 +4,30 @@ import { Title } from "../components/Title";
 import { useEffect, useState } from "react";
 import { Input } from "../components/Input";
 import { persistor } from "../app/store";
+import ServiceProvider from "../components/firebaseServices/ServiceProviders";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [signinError, setSignInError] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [isEmpty, setIsEmpty] = useState(false);
+
+  const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  
+  const [isEmpty, setIsEmpty] = useState(false);
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
+  const [signinError, setSignInError] = useState(false);
 
   const handleSubmit = () => {
-    const storedUser = JSON.parse(localStorage?.getItem(userName));
+    const storedUser = JSON.parse(localStorage?.getItem(userEmail));
     const storedUserPassword = JSON.parse(
-      localStorage?.getItem(userName)
+      localStorage?.getItem(userEmail)
     )?.password;
-    if (userName === "") {
+    if (userEmail === "") {
       setIsEmpty(true);
     } else if (userPassword == "") {
       setIsPasswordEmpty(true);
     } else if (storedUser && storedUserPassword === userPassword) {
-      sessionStorage.setItem("username", userName);
-      localStorage.setItem("isLogin", userName);
+      sessionStorage.setItem("userEmail", userEmail);
+      localStorage.setItem("isLogin", userEmail);
       navigate("/home");
     } else {
       setSignInError(true);
@@ -37,7 +40,7 @@ export default function Login() {
     const user = JSON.parse(localStorage?.getItem(isLogin));
     console.log(user);
     if (isLogin && user) {
-      sessionStorage.setItem("username", isLogin);
+      sessionStorage.setItem("userEmail", isLogin);
       navigate("/home");
     } else if (isLogin && user.isOnline == false) {
       localStorage.removeItem("isLogin");
@@ -61,10 +64,10 @@ export default function Login() {
                 : "tw-border-slate-600"
             }`}
             type="text"
-            placeholder="Enter User Name"
-            value={userName}
+            placeholder="Enter Email"
+            value={userEmail}
             onChange={(e) => {
-              setUserName(e.target.value.trim().toLowerCase());
+              setUserEmail(e.target.value.trim().toLowerCase());
               setIsEmpty(false);
               setSignInError(false);
             }}
@@ -86,7 +89,7 @@ export default function Login() {
           />
           {signinError && (
             <div className="tw-text-red-500 md:tw-text-[1vw] lg:tw-text-[1vw]">
-              Incorrect Username or Password.
+              Incorrect UserEmail or Password.
             </div>
           )}
           <Button
@@ -107,6 +110,8 @@ export default function Login() {
             Sign Up
           </Link>
         </div>
+        <hr className="tw-border-2 tw-border-myYellow tw-w-full tw-my-5" />
+        <ServiceProvider />
       </div>
     </div>
   );

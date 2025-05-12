@@ -1,16 +1,14 @@
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "./firebaseConfig";
+import { db } from "./FirebaseConfig";
 
-export async function newUser({ username, userpassword }) {
+export async function newUser({ userId }) {
     try {
-        const userDoc = doc(db, 'users', username);
+        const userDoc = doc(db, 'users', userId); 
         await setDoc(userDoc, {
-            username,
-            userpassword: userpassword,
             isOnline: false,
         });
 
-        const taskDoc = doc(db, 'tasks', username);
+        const taskDoc = doc(db, 'tasks', userId);
         await setDoc(taskDoc, {
             todo: [],
             completed: []
