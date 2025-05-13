@@ -1,16 +1,37 @@
+import { useState } from "react";
 import { Input } from "./Input";
 import Button from "./Button";
-import { useDispatch } from "react-redux";
-import { addTodo } from "../features/todoList/TodoListSlice";
-import { useState } from "react";
+import { Loading2 } from "./Loading2";
+import { db } from "../firebase/FirebaseConfig";
+import { doc, runTransaction } from "firebase/firestore";
 
-export const AddTasks = () => {
-  const [ task, setTask ] = useState('');
-  const dispatch = useDispatch();
-  const handleSubmit = () => {
+export const AddTasks = ({ userId }) => {
+  const [task, setTask] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
     if (task) {
-      dispatch(addTodo(task));
-      setTask('');
+      setLoading(true);
+      const userTaskDoc = doc(db, "tasks", userId);
+      try {
+        await runTransaction(db, async (transaction) => {
+          const taskDoc = await transaction.get(userTaskDoc);
+          if (!taskDoc.exists()) {
+            throw new Error("Document does not exist");
+          }
+          const currentTasks = taskDoc.data().todo || [];
+          currentTasks.push(task);
+          // currentTasks.unshift(task);
+          
+
+          transaction.update(userTaskDoc, { todo: currentTasks });
+        });
+        console.log("Task added successfully!");
+      } catch (error) {
+        console.error("Error adding task:", error);
+      }
+      setTask("");
+      setLoading(false);
     }
   };
 
@@ -22,14 +43,14 @@ export const AddTasks = () => {
         placeholder={"Enter Task Here"}
         value={task}
         onChange={(e) => {
-          setTask(e.target.value)
+          setTask(e.target.value);
         }}
       />
       <Button
         className={
-          "tw-w-[20%] tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-2xl tw-py-2 tw-font-bold hover:tw-underline tw-duration-500 tw-rounded-l-none"
+          "tw-w-[20%] tw-h-[40px] tw-flex tw-items-center tw-justify-center tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-2xl tw-font-bold hover:tw-underline tw-duration-500 tw-rounded-l-none"
         }
-        text={"Add"}
+        text={loading ? <Loading2 /> : "Add"}
         onClick={handleSubmit}
       />
     </div>

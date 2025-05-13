@@ -17,7 +17,7 @@ export default function VerifyEmail() {
         clearInterval(interval);
         toast.success("Email verified successfully!");
         await newUser({ userId: user.uid });
-        navigate("/");
+        navigate("/Home");
       }
     }, 3000);
 

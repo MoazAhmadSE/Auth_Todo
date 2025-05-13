@@ -2,7 +2,7 @@ import { Logout } from "./Logout";
 import { Title } from "./Title";
 import { Delete } from "./Delete";
 
-export const Navbar = () => {
+export const Navbar = ({ userName }) => {
   return (
     <div>
       <div className="sm:tw-block md:tw-hidden lg:tw-hidden">
@@ -12,9 +12,9 @@ export const Navbar = () => {
             title="Todo List"
           />
           <h3 className="tw-text-myYellow tw-flex tw-items-center tw-gap-2 tw-font-bold tw-pt-3">
-            Username:&nbsp;{sessionStorage.getItem("username")?.toUpperCase()}
-            <Logout />
-            <Delete />
+            Username:&nbsp;{userName.toUpperCase()}
+            {/* <Logout />
+            <Delete /> */}
           </h3>
         </div>
       </div>
@@ -26,9 +26,9 @@ export const Navbar = () => {
             title="Todo List"
           />
           <h3 className="tw-text-myYellow tw-flex tw-items-center tw-gap-2 tw-font-bold">
-            Username:&nbsp;{sessionStorage.getItem("username")?.toUpperCase()}
-            <Logout />
-            <Delete />
+            Username:&nbsp;{userName.toUpperCase()}
+            {/* <Logout />
+            <Delete /> */}
           </h3>
         </div>
       </div>

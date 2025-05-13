@@ -1,52 +1,90 @@
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { Title } from "../components/Title";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "../components/Input";
 import { persistor } from "../app/store";
 import ServiceProvider from "../components/firebaseServices/ServiceProviders";
+import {
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../firebase/FirebaseConfig";
+import { toast } from "react-toastify";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Login() {
   const navigate = useNavigate();
 
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  
+
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
   const [signinError, setSignInError] = useState(false);
 
-  const handleSubmit = () => {
-    const storedUser = JSON.parse(localStorage?.getItem(userEmail));
-    const storedUserPassword = JSON.parse(
-      localStorage?.getItem(userEmail)
-    )?.password;
+  const captchaRef = useRef(null);
+  const [ isCaptchaValid, setIsCaptchaValid ] = useState(false);
+
+  const handleCaptcha = (value) => {
+    if(value) setIsCaptchaValid(true);
+  };
+
+  const handleSubmit = async () => {
+    // const storedUser = JSON.parse(localStorage?.getItem(userEmail));
+    // const storedUserPassword = JSON.parse(
+    //   localStorage?.getItem(userEmail)
+    // )?.password;
     if (userEmail === "") {
       setIsEmpty(true);
     } else if (userPassword == "") {
       setIsPasswordEmpty(true);
-    } else if (storedUser && storedUserPassword === userPassword) {
-      sessionStorage.setItem("userEmail", userEmail);
-      localStorage.setItem("isLogin", userEmail);
-      navigate("/home");
     } else {
-      setSignInError(true);
+      const token = captchaRef.current.getValue();
+      if(!token){
+        toast.error("Plese Verify you are not a Robot.")
+        return;
+      }
+      try {
+        const result = await signInWithEmailAndPassword(
+          auth,
+          userEmail,
+          userPassword
+        );
+        const user = result.user;
+        if (!user.emailVerified) {
+          console.log("not verified");
+          navigate("/VerifyEmail");
+        } else {
+          navigate("/Home");
+          toast.info("Sucessfully Login");
+        }
+      } catch (error) {
+        if (error.code === "auth/too-many-requests") {
+          toast.error("Too many login attempts. Please try again later.");
+        } else if (error.code === "auth/invalid-credential") {
+          setSignInError(true);
+        } else {
+          toast.error("Login failed. Please try again.");
+          console.error(error);
+        }
+        console.error(error);
+      }
     }
   };
 
-  useEffect(() => {
-    const isLogin = localStorage?.getItem("isLogin");
-    console.log(isLogin);
-    const user = JSON.parse(localStorage?.getItem(isLogin));
-    console.log(user);
-    if (isLogin && user) {
-      sessionStorage.setItem("userEmail", isLogin);
-      navigate("/home");
-    } else if (isLogin && user.isOnline == false) {
-      localStorage.removeItem("isLogin");
-      persistor.purge();
-    }
-  }, []);
+  // useEffect(() => {
+  //   const isLogin = localStorage?.getItem("isLogin");
+  //   console.log(isLogin);
+  //   const user = JSON.parse(localStorage?.getItem(isLogin));
+  //   console.log(user);
+  //   if (isLogin && user) {
+  //     sessionStorage.setItem("userEmail", isLogin);
+  //     navigate("/home");
+  //   } else if (isLogin && user.isOnline == false) {
+  //     localStorage.removeItem("isLogin");
+  //     persistor.purge();
+  //   }
+  // }, []);
 
   return (
     <div className="tw-bg-myDark tw-min-h-screen tw-min-w-full tw-flex tw-justify-center tw-items-center">
@@ -92,13 +130,21 @@ export default function Login() {
               Incorrect UserEmail or Password.
             </div>
           )}
+          <ReCAPTCHA
+            className="tw-mt-3"
+            sitekey="6Ldz0DcrAAAAAH8VZMwaRbcYhYWur8rpbGcvAAlY"
+            theme="dark"
+            onChange={handleCaptcha}
+            ref={captchaRef}
+          />
           <Button
             className={
-              "tw-w-[100%] tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-lg tw-text-lg tw-py-2 tw-font-bold hover:tw-underline tw-duration-500 tw-mt-4 tw-mb-2"
+              `tw-w-[100%] tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-lg tw-text-lg tw-py-2 tw-font-bold hover:tw-underline tw-duration-500 tw-mt-4 tw-mb-2 ${!isCaptchaValid ? "tw-cursor-not-allowed" : "tw-cursor-default"}`
             }
             text={"Login"}
             type="submit"
             onClick={handleSubmit}
+            disabled={!isCaptchaValid}
           />
         </div>
         <div className="tw-flex tw-w-full tw-flex-nowrap md:tw-text-[1.5vw] lg:tw-text-[1vw]">
