@@ -1,5 +1,5 @@
 import { Logout } from "./Logout";
-import { Title } from "./Title";
+import { Title } from "../../Title";
 import { Delete } from "./Delete";
 
 export const Navbar = ({ userName }) => {
@@ -13,8 +13,8 @@ export const Navbar = ({ userName }) => {
           />
           <h3 className="tw-text-myYellow tw-flex tw-items-center tw-gap-2 tw-font-bold tw-pt-3">
             Username:&nbsp;{userName.toUpperCase()}
-            {/* <Logout />
-            <Delete /> */}
+            <Logout />
+            <Delete />
           </h3>
         </div>
       </div>
@@ -27,8 +27,8 @@ export const Navbar = ({ userName }) => {
           />
           <h3 className="tw-text-myYellow tw-flex tw-items-center tw-gap-2 tw-font-bold">
             Username:&nbsp;{userName.toUpperCase()}
-            {/* <Logout />
-            <Delete /> */}
+            <Logout />
+            <Delete />
           </h3>
         </div>
       </div>

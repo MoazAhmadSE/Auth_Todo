@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { db, auth } from "../../firebase/FirebaseConfig";
 
-export const UsernamePasswordProvider = async (props) => {
+export const EmailPasswordProvider = async (props) => {
   const { userName, userMail, userPassword, navigate, setLoading } = props;
   try {
     const result = await createUserWithEmailAndPassword(

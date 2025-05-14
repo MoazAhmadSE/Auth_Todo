@@ -1,39 +1,9 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase/FirebaseConfig";
-import { newUser } from "../firebase/NewUser";
-import { toast } from "react-toastify";
-import { sendEmailVerification } from "firebase/auth";
+import { useEmailVerification } from "../hooks/useEmailVerification";
+
 export default function VerifyEmail() {
   const navigate = useNavigate();
-  const [checking, setChecking] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      const user = auth.currentUser;
-      await user.reload();
-
-      if (user.emailVerified) {
-        clearInterval(interval);
-        toast.success("Email verified successfully!");
-        await newUser({ userId: user.uid });
-        navigate("/Home");
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const resendVerification = async () => {
-    setChecking(true);
-    try {
-      await sendEmailVerification(auth.currentUser);
-      toast.info("Verification email resent.");
-    } catch (err) {
-      toast.error(`Error resending email. ${err}`);
-    }
-    setChecking(false);
-  };
+  const { checking, resendVerification } = useEmailVerification({ navigate });
 
   return (
     <div className="tw-h-screen tw-flex tw-flex-col tw-items-center tw-justify-center tw-text-center tw-text-white">

@@ -1,32 +1,19 @@
-import { useNavigate } from "react-router-dom";
-import { AddTasks } from "../components/AddTasks";
-import { List } from "../components/List";
-import { Navbar } from "../components/Navbar";
-import { useEffect, useState } from "react";
-import { auth } from "../firebase/FirebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
+import { AddTasks } from "../components/home/AddTasks";
+import { List } from "../components/home/List";
+import { Navbar } from "../components/home/Navbar/Navbar";
 import Loading from "../components/Loading";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 export default function Home() {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading } = useAuthCheck();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        setUser(firebaseUser);
-        localStorage.setItem("userId", firebaseUser.uid);
-      } else {
-        navigate("/");
-      }
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [navigate]);
-
-  if (loading) return <Loading />;
+  if (loading) {
+    return (
+      <div className="tw-h-screen">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div>

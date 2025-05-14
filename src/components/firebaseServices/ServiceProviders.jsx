@@ -7,7 +7,7 @@ import {
   faGithub,
 } from "@fortawesome/free-brands-svg-icons";
 
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import {
   GoogleAuthProvider,
   signInWithPopup,
@@ -31,12 +31,24 @@ export default function ServiceProvider() {
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
-        navigate("/");
-        toast.info("User already exists");
+        try {
+          await updateDoc(userDocRef, { isOnline: true });
+          console.log("isOnline status updated");
+        } catch (error) {
+          console.log("Error updating isOnline status:", error);
+        }
+        navigate("/Home");
+        toast.info("Welcome Back!");
       } else {
         toast.success("Email verified successfully!");
         await newUser({ userId: user.uid });
-        navigate("/");
+        try {
+          await updateDoc(userDocRef, { isOnline: true });
+          console.log("isOnline status updated");
+        } catch (error) {
+          console.log("Error updating isOnline status:", error);
+        }
+        navigate("/Home");
       }
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
