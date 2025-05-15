@@ -7,6 +7,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 import useSignin from "../hooks/useSignin";
 import useCaptcha from "../hooks/useCaptcha";
 import { useResetPassword } from "../hooks/useResetPassword";
+import { Loading2 } from "../components/Loading2";
+// import { toast } from "react-toastify";
 
 export default function Login() {
   const {
@@ -15,26 +17,20 @@ export default function Login() {
     userPassword,
     isPasswordEmpty,
     signinError,
+    disableButton,
     setUserEmail,
     setIsEmpty,
     setUserPassword,
     setIsPasswordEmpty,
     setSignInError,
     handleSubmit,
+    setdisableButton,
+    handleForgetPassword,
   } = useSignin();
 
   const { captchaRef, isCaptchaValid, handleCaptcha, getToken } = useCaptcha();
 
   const { resetPassword, error, isSuccess } = useResetPassword();
-
-  const handleLogin = () => {
-    const token = getToken();
-    handleSubmit(token);
-  };
-
-  const handleForgetPassword = () => {
-    resetPassword(userEmail);
-  };
 
   return (
     <div className="tw-bg-myDark tw-min-h-screen tw-min-w-full tw-flex tw-justify-center tw-items-center">
@@ -80,6 +76,12 @@ export default function Login() {
               Incorrect Email or Password.
             </div>
           )}
+          <div
+            className="tw-text-myYellow tw-font-thin tw-text-xs tw-flex tw-justify-end tw-mr-3 hover:tw-underline tw-cursor-pointer"
+            onClick={() => handleForgetPassword(resetPassword)}
+          >
+            Forget Password
+          </div>
           {error && (
             <div className="tw-text-red-500 md:tw-text-[1vw] lg:tw-text-[1vw]">
               {error}
@@ -90,12 +92,6 @@ export default function Login() {
               A password reset email has been sent!
             </div>
           )}
-          <div
-            className="tw-text-myYellow tw-font-thin tw-text-xs tw-flex tw-justify-end tw-mr-3 hover:tw-underline tw-cursor-pointer"
-            onClick={handleForgetPassword}
-          >
-            Forget Password
-          </div>
           <ReCAPTCHA
             className="tw-mt-3 tw-flex tw-justify-center"
             sitekey="6Ldz0DcrAAAAAH8VZMwaRbcYhYWur8rpbGcvAAlY"
@@ -107,9 +103,14 @@ export default function Login() {
             className={`tw-w-[100%] tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-lg tw-text-lg tw-py-2 tw-font-bold hover:tw-underline tw-duration-500 tw-mt-4 tw-mb-2 ${
               !isCaptchaValid ? "tw-cursor-not-allowed" : "tw-cursor-default"
             }`}
+            // text={disableButton ? <Loading2/> : "Login"}
             text={"Login"}
             type="submit"
-            onClick={handleLogin}
+            onClick={() => {
+              handleSubmit(getToken);
+              setdisableButton(true);
+            }}
+            disabled={disableButton}
           />
         </div>
         <div className="tw-flex tw-w-full tw-flex-nowrap md:tw-text-[1.5vw] lg:tw-text-[1vw]">

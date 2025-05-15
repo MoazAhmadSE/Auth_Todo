@@ -14,7 +14,7 @@ export default function useAuthCheck() {
         setUser(firebaseUser);
         localStorage.setItem("userId", firebaseUser.uid);
       } else {
-        navigate("/");
+        navigate("/login");
       }
       setLoading(false);
     });

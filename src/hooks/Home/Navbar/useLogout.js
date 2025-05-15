@@ -15,7 +15,7 @@ export const useLogout = () => {
       await updateDoc(userRef, { isOnline: false });
       await signOut(auth);
       localStorage.removeItem("userId");
-      navigate("/");
+      navigate("/login");
       toast.info("Logout Successfully!");
     } catch (error) {
       console.error("Error during logout or updating isOnline:", error);

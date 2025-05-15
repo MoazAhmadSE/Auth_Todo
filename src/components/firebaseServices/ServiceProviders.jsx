@@ -34,21 +34,20 @@ export default function ServiceProvider() {
         try {
           await updateDoc(userDocRef, { isOnline: true });
           console.log("isOnline status updated");
+          navigate("/Home");
+          toast.info("Welcome Back!");
         } catch (error) {
           console.log("Error updating isOnline status:", error);
         }
-        navigate("/Home");
-        toast.info("Welcome Back!");
       } else {
-        toast.success("Email verified successfully!");
         await newUser({ userId: user.uid });
         try {
           await updateDoc(userDocRef, { isOnline: true });
           console.log("isOnline status updated");
+          navigate("/Home");
         } catch (error) {
           console.log("Error updating isOnline status:", error);
         }
-        navigate("/Home");
       }
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
@@ -70,7 +69,7 @@ export default function ServiceProvider() {
 
   return (
     <>
-      <div className="tw-flex tw-justify-evenly tw-w-full tw-mt-4">
+      <div className="tw-flex tw-justify-evenly tw-w-full tw-mt-3">
         <FontAwesomeIcon
           onClick={handleGoogleAuth}
           icon={faGoogle}

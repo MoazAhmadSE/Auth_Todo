@@ -6,19 +6,19 @@ export const useResetPassword = () => {
     const [error, setError] = useState(null);
     const [isSuccess, setIsSuccess] = useState(false);
 
-    const resetPassword = async (email, newPassword) => {
+    const resetPassword = async (email) => {
+        const resetPage = "reset-password";
+        const actionCodeSettings = {
+            url: `http://localhost:5173/${resetPage}`,
+            handleCodeInApp: true,
+        };
+
         try {
-            // Update the password in Firebase or use the password reset flow
-            // Since Firebase directly handles password reset email flow, we'll assume a reset email for now
-            const actionCodeSettings = {
-                url: 'http://localhost:5173/reset-password',
-                handleCodeInApp: true,
-            };
             await sendPasswordResetEmail(auth, email, actionCodeSettings);
             setIsSuccess(true);
             setError(null);
         } catch (error) {
-            setError(error.message);
+            setError(error.code);
             setIsSuccess(false);
         }
     };

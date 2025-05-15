@@ -38,14 +38,9 @@ export default function Signup() {
 
   const { captchaRef, isCaptchaValid, handleCaptcha, getToken } = useCaptcha();
 
-  const handleSignup = () => {
-    const token = getToken();
-    handleSubmit(token);
-  };
-
   return (
     <div className="tw-bg-myDark tw-min-h-screen tw-min-w-full tw-flex tw-justify-center tw-items-center">
-      <div className="tw-text-slate-100 tw-border-2 tw-p-10 tw-rounded-2xl tw-border-myYellow md:tw-w-[40%] lg:tw-w-[30%] sm:tw-w-[95%] tw-items-center tw-flex tw-flex-col">
+      <div className="tw-text-slate-100 tw-border-2 tw-px-10 tw-py-8 tw-rounded-2xl tw-border-myYellow md:tw-w-[40%] lg:tw-w-[30%] sm:tw-w-[95%] tw-items-center tw-flex tw-flex-col">
         <Title
           className="tw-text-myYellow tw-text-4xl tw-font-bold"
           title={"Sign Up"}
@@ -134,12 +129,12 @@ export default function Signup() {
               <Button
                 className={`tw-w-full tw-h-[48px] tw-border tw-rounded-lg tw-text-lg tw-py-2 tw-duration-500 tw-mt-4 tw-mb-2 tw-bg-myYellow tw-border-myYellow tw-text-myDark hover:tw-underline tw-font-bold tw-flex tw-items-center tw-justify-center ${!isCaptchaValid ? "tw-cursor-not-allowed" : "tw-cursor-default"}`}
                 text={"Create"}
-                onClick={handleSignup}
+                onClick={() => handleSubmit(getToken)}
               />
             </div>
             <div className="tw-flex tw-w-full tw-flex-nowrap md:tw-text-[1.5vw] lg:tw-text-[1vw] ">
               <h3>Already have an Account?</h3>
-              <Link to={"/"} className="tw-text-myYellow tw-underline tw-ml-1 ">
+              <Link to={"/login"} className="tw-text-myYellow tw-underline tw-ml-1 ">
                 Sign in
               </Link>
             </div>

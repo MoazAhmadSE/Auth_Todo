@@ -1,4 +1,4 @@
-export const Input = ({ className, type, placeholder, value, onChange }) => {
+export const Input = ({ className, type, placeholder, value, onChange, readOnly }) => {
   return (
     <input
       className={className}
@@ -6,6 +6,7 @@ export const Input = ({ className, type, placeholder, value, onChange }) => {
       value={value}
       placeholder={placeholder}
       onChange={onChange}
+      readOnly={readOnly}
     />
   );
 };

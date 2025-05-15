@@ -26,7 +26,12 @@ export const EmailPasswordProvider = async (props) => {
     const userDocRef = doc(db, "users", user.uid);
     const userDoc = await getDoc(userDocRef);
     if (!userDoc.exists()) {
-      await sendEmailVerification(user);
+      const Page = "VerifyEmail";
+      const actionCodeSettings = {
+        url: `http://localhost:5173/${Page}`,
+        handleCodeInApp: true,
+      };
+      await sendEmailVerification(user, actionCodeSettings);
       setLoading(false);
       navigate("/VerifyEmail");
       toast.info("Verification email sent. Please check your inbox.");

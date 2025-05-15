@@ -48,7 +48,7 @@ export const useDeleteUser = () => {
         const email = user.email;
         const password = await prompt("Please enter your password for reauthentication:");
         if (!password) {
-          toast.error("Password is required for reauthentication.");
+          toast.error(`Password is required for reauthentication: ${email}`);
           return;
         }
         const credential = await EmailAuthProvider.credential(email, password);
@@ -56,6 +56,11 @@ export const useDeleteUser = () => {
       } else {
         toast.info("Re-authenticating, please confirm your identity.");
         await reauthenticateWithPopup(user, provider);
+        if (auth.currentUser?.uid !== user.uid) {
+          await auth.signOut();
+          toast.warn("You were signed out. Please log in again with the correct account.");
+          navigate("/login");
+        }
       }
 
       await deleteUser(user);
@@ -63,7 +68,7 @@ export const useDeleteUser = () => {
       await deleteDoc(doc(db, "users", user.uid));
       localStorage.clear();
       toast.success("Account Deleted Successfully!");
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       if (error.code === "auth/user-mismatch") {
         toast.warn("User mismatch detected.");
@@ -74,13 +79,8 @@ export const useDeleteUser = () => {
         console.error("Error during account deletion:", error);
         toast.error("Deletion failed. Please try again later.");
       }
-      if (auth.currentUser?.uid !== user.uid) {
-        await auth.signOut();
-        toast.warn("You were signed out. Please log in again with the correct account.");
-        navigate("/");
-      }
     }
   };
 
-  return {deleteAccount}
+  return { deleteAccount }
 };

@@ -7,6 +7,7 @@ import useAuthCheck from "../hooks/useAuthCheck";
 export default function Home() {
   const { user, loading } = useAuthCheck();
 
+  console.log(user);
   if (loading) {
     return (
       <div className="tw-h-screen">

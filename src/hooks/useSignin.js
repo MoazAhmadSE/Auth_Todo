@@ -13,6 +13,7 @@ export default function useSignin() {
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
   const [signinError, setSignInError] = useState(false);
+  const [disableButton, setdisableButton] = useState(false);
 
   const handleSubmit = async (captchaToken) => {
     if (userEmail === "") {
@@ -54,17 +55,29 @@ export default function useSignin() {
     }
   };
 
+  const handleForgetPassword = (resetPassword) => {
+    if (!userEmail) {
+      toast.error("Please enter Email Address.");
+      setIsEmpty(true);
+      return;
+    }
+    resetPassword(userEmail);
+  };
+
   return {
     userEmail,
     userPassword,
     isEmpty,
     isPasswordEmpty,
     signinError,
+    disableButton,
     setUserEmail,
     setUserPassword,
     setIsEmpty,
     setIsPasswordEmpty,
     setSignInError,
     handleSubmit,
+    setdisableButton,
+    handleForgetPassword,
   };
 }
