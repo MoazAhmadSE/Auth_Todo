@@ -4,12 +4,12 @@ import { db } from "../../../firebase/FirebaseConfig";
 export const useTaskActions = (userId) => {
   const taskRef = doc(db, "tasks", userId);
 
-  const updateTasks = async (callback) => {
+  const updateTasks = async (callbackFunc) => {
     await runTransaction(db, async (transaction) => {
       const docSnap = await transaction.get(taskRef);
       if (!docSnap.exists()) throw new Error("Document does not exist");
       const data = docSnap.data();
-      await callback(data, transaction);
+      await callbackFunc(data, transaction);
     });
   };
 
