@@ -7,30 +7,34 @@ import ReCAPTCHA from "react-google-recaptcha";
 import useSignin from "../hooks/useSignin";
 import useCaptcha from "../hooks/useCaptcha";
 import { useResetPassword } from "../hooks/useResetPassword";
-import { Loading2 } from "../components/Loading2";
-// import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
+  const { loginWithEmailPassword } = useAuth();
+
   const {
     userEmail,
-    isEmpty,
     userPassword,
+    isEmpty,
     isPasswordEmpty,
     signinError,
-    disableButton,
     setUserEmail,
-    setIsEmpty,
     setUserPassword,
+    setIsEmpty,
     setIsPasswordEmpty,
     setSignInError,
-    handleSubmit,
-    setdisableButton,
     handleForgetPassword,
+    handleLogin,
   } = useSignin();
 
-  const { captchaRef, isCaptchaValid, handleCaptcha, getToken } = useCaptcha();
+  const { captchaRef, isCaptchaValid, handleCaptcha, getToken, resetCaptcha } =
+    useCaptcha();
 
   const { resetPassword, error, isSuccess } = useResetPassword();
+
+  const onLoginClick = () => {
+    handleLogin(isCaptchaValid, getToken, loginWithEmailPassword, resetCaptcha);
+  };
 
   return (
     <div className="tw-bg-myDark tw-min-h-screen tw-min-w-full tw-flex tw-justify-center tw-items-center">
@@ -101,16 +105,14 @@ export default function Login() {
           />
           <Button
             className={`tw-w-[100%] tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-lg tw-text-lg tw-py-2 tw-font-bold hover:tw-underline tw-duration-500 tw-mt-4 tw-mb-2 ${
-              !isCaptchaValid ? "tw-cursor-not-allowed" : "tw-cursor-default"
+              !isCaptchaValid
+                ? "tw-cursor-not-allowed"
+                : "tw-cursor-pointer"
             }`}
-            // text={disableButton ? <Loading2/> : "Login"}
             text={"Login"}
-            type="submit"
-            onClick={() => {
-              handleSubmit(getToken);
-              setdisableButton(true);
-            }}
-            disabled={disableButton}
+            type="button"
+            onClick={onLoginClick}
+            // disabled={!isCaptchaValid}
           />
         </div>
         <div className="tw-flex tw-w-full tw-flex-nowrap md:tw-text-[1.5vw] lg:tw-text-[1vw]">

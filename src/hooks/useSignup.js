@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { EmailPasswordProvider } from "../components/firebaseServices/EmailPasswordProvider";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const useSignup = () => {
-  const navigate = useNavigate();
 
   const [userName, setUserName] = useState("");
   const [userMail, setUserMail] = useState("");
@@ -23,13 +21,6 @@ export const useSignup = () => {
   const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const handleSubmit = async (captchaToken) => {
-    setIsUserNameEmpty(false);
-    setUserMailIsEmpty(false);
-    setValidEmail(true);
-    setIsPasswordEmpty(false);
-    setValidPassword(true);
-    setIsConfirmPasswordEmpty(false);
-    setPasswordDidMatch(true);
 
     if (userName.trim() === "") {
       setIsUserNameEmpty(true);
@@ -52,16 +43,16 @@ export const useSignup = () => {
     } else if (userPassword !== confirmUserPassword) {
       setPasswordDidMatch(false);
       return;
-    } else if (!captchaToken) {
+    } else if (!captchaToken()) {
       toast.error("Please verify you're not a robot.");
       return;
     } else if (userPassword === confirmUserPassword) {
+      console.log(captchaToken);
       setLoading(true);
       await EmailPasswordProvider({
         userName,
         userMail,
         userPassword,
-        navigate,
         setLoading,
       });
       setLoading(false);

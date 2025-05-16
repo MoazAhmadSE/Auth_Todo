@@ -16,7 +16,7 @@ export default function useAddTask(userId) {
       await runTransaction(db, async (transaction) => {
         const taskDoc = await transaction.get(userTaskDoc);
         if (!taskDoc.exists()) {
-          throw new Error("Document does not exist");
+          throw Error("Document does not exist");
         }
         const currentTasks = taskDoc.data().todo || [];
         currentTasks.push(task);

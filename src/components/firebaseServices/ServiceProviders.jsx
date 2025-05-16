@@ -1,94 +1,31 @@
-import { useNavigate } from "react-router-dom";
+// src/components/ServiceProvider.jsx
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { toast } from "react-toastify";
-import {
-  faGoogle,
-  faFacebook,
-  faGithub,
-} from "@fortawesome/free-brands-svg-icons";
-
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  GithubAuthProvider,
-  FacebookAuthProvider,
-} from "firebase/auth";
-import { db, auth } from "../../firebase/FirebaseConfig";
-import { newUser } from "../../firebase/NewUser";
+import { faGoogle, faFacebook, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { useAuth } from "../../context/AuthContext";
 
 export default function ServiceProvider() {
-  const navigate = useNavigate();
-
-  const handleAuth = async (provider) => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      console.log("user:", user);
-      console.log("Signed in as:", user.email);
-
-      const userDocRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userDocRef);
-
-      if (userDoc.exists()) {
-        try {
-          await updateDoc(userDocRef, { isOnline: true });
-          console.log("isOnline status updated");
-          navigate("/Home");
-          toast.info("Welcome Back!");
-        } catch (error) {
-          console.log("Error updating isOnline status:", error);
-        }
-      } else {
-        await newUser({ userId: user.uid });
-        try {
-          await updateDoc(userDocRef, { isOnline: true });
-          console.log("isOnline status updated");
-          navigate("/Home");
-        } catch (error) {
-          console.log("Error updating isOnline status:", error);
-        }
-      }
-    } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        toast.error("This email is already registered.");
-      } else if (
-        error.code === "auth/account-exists-with-different-credential"
-      ) {
-        toast.error("This email is already registered with other provider.");
-      } else {
-        console.error("Auth error:", error);
-        toast.error("An error occurred. Please try again.");
-      }
-    }
-  };
-
-  const handleGoogleAuth = () => handleAuth(new GoogleAuthProvider());
-  const handleGithubAuth = () => handleAuth(new GithubAuthProvider());
-  const handleFacebookAuth = () => handleAuth(new FacebookAuthProvider());
+  const { loginWithPopupProvider } = useAuth();
 
   return (
-    <>
-      <div className="tw-flex tw-justify-evenly tw-w-full tw-mt-3">
-        <FontAwesomeIcon
-          onClick={handleGoogleAuth}
-          icon={faGoogle}
-          className=" hover:tw-cursor-pointer "
-          size="2x"
-        />
-        <FontAwesomeIcon
-          icon={faFacebook}
-          onClick={handleFacebookAuth}
-          className=" hover:tw-cursor-pointer "
-          size="2x"
-        />
-        <FontAwesomeIcon
-          onClick={handleGithubAuth}
-          className=" hover:tw-cursor-pointer "
-          icon={faGithub}
-          size="2x"
-        />
-      </div>
-    </>
+    <div className="tw-flex tw-justify-evenly tw-w-full tw-mt-3">
+      <FontAwesomeIcon
+        onClick={() => loginWithPopupProvider("google.com")}
+        icon={faGoogle}
+        className="hover:tw-cursor-pointer"
+        size="2x"
+      />
+      <FontAwesomeIcon
+        onClick={() => loginWithPopupProvider("facebook.com")}
+        icon={faFacebook}
+        className="hover:tw-cursor-pointer"
+        size="2x"
+      />
+      <FontAwesomeIcon
+        onClick={() => loginWithPopupProvider("github.com")}
+        icon={faGithub}
+        className="hover:tw-cursor-pointer"
+        size="2x"
+      />
+    </div>
   );
 }

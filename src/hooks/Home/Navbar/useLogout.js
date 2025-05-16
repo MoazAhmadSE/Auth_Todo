@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { signOut } from "firebase/auth";
-import { auth, db } from "../../../firebase/FirebaseConfig";
+import { db, auth } from "../../../firebase/FirebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 
 export const useLogout = () => {
@@ -14,8 +14,8 @@ export const useLogout = () => {
     try {
       await updateDoc(userRef, { isOnline: false });
       await signOut(auth);
-      localStorage.removeItem("userId");
-      navigate("/login");
+      // localStorage.removeItem("userId");
+      navigate("/");
       toast.info("Logout Successfully!");
     } catch (error) {
       console.error("Error during logout or updating isOnline:", error);

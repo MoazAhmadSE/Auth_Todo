@@ -3,13 +3,13 @@ import { toast } from "react-toastify";
 import { doc, getDoc } from "firebase/firestore";
 import {
   createUserWithEmailAndPassword,
-  sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
 import { db, auth } from "../../firebase/FirebaseConfig";
+import { SendVerificationMail } from "./SendVerificationMail";
 
-export const EmailPasswordProvider = async (props) => {
-  const { userName, userMail, userPassword, navigate, setLoading } = props;
+export const  EmailPasswordProvider = async (props) => {
+  const { userName, userMail, userPassword, setLoading } = props;
   try {
     const result = await createUserWithEmailAndPassword(
       auth,
@@ -26,17 +26,16 @@ export const EmailPasswordProvider = async (props) => {
     const userDocRef = doc(db, "users", user.uid);
     const userDoc = await getDoc(userDocRef);
     if (!userDoc.exists()) {
-      const Page = "VerifyEmail";
-      const actionCodeSettings = {
-        url: `http://localhost:5173/${Page}`,
-        handleCodeInApp: true,
-      };
-      await sendEmailVerification(user, actionCodeSettings);
-      setLoading(false);
-      navigate("/VerifyEmail");
-      toast.info("Verification email sent. Please check your inbox.");
+      try {
+        await SendVerificationMail(user);
+        setLoading(false);
+        toast.info("Verification email sent. Please check your inbox.");
+      } catch (error) {
+        console.log(error);
+      }
     }
   } catch (error) {
+    console.error("Auth error:", error);
     if (error.code === "auth/email-already-in-use") {
       toast.error("This email is already registered.");
     } else if (

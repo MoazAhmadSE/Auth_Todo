@@ -7,7 +7,7 @@ export const useTaskActions = (userId) => {
   const updateTasks = async (callbackFunc) => {
     await runTransaction(db, async (transaction) => {
       const docSnap = await transaction.get(taskRef);
-      if (!docSnap.exists()) throw new Error("Document does not exist");
+      if (!docSnap.exists()) throw Error("Document does not exist");
       const data = docSnap.data();
       await callbackFunc(data, transaction);
     });

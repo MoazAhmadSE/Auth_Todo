@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { auth, db } from "../firebase/FirebaseConfig";
-import { newUser } from "../firebase/NewUser";
+import { auth } from "../firebase/FirebaseConfig";
 import { toast } from "react-toastify";
-import { sendEmailVerification, applyActionCode } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
+import { applyActionCode, signOut } from "firebase/auth";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { SendVerificationMail } from "../components/firebaseServices/SendVerificationMail";
 
 export const useEmailVerification = () => {
   const [checking, setChecking] = useState(false);
@@ -13,34 +12,26 @@ export const useEmailVerification = () => {
   const oobCode = searchParams.get("oobCode");
   const navigate = useNavigate();
 
-  const Page = "VerifyEmail";
-  const actionCodeSettings = {
-    url: `http://localhost:5173/${Page}`,
-    handleCodeInApp: true,
-  };  
-
   useEffect(() => {
     const verifyEmail = async () => {
       if (oobCode) {
         setLoading(true)
-        try {
-          await applyActionCode(auth, oobCode);
-          const user = auth.currentUser;
-          if (user) {
-            console.log(user);
-            await newUser({ userId: user.uid });
-            const userRef = doc(db, "users", user.uid);
-            await updateDoc(userRef, { isOnline: true });
-            toast.success("Email verified successfully!");
-            setTimeout(() => {
-              navigate("/home");
-            }, 1500);
+        setTimeout(async () => {
+          try {
+            await applyActionCode(auth, oobCode);
+            const user = auth?.currentUser;
+            if (user) {
+              console.log(user);
+              toast.success("Email verified successfully!");
+              signOut(auth);
+            }
+          } catch (err) {
+            toast.error("Invalid or expired verification link.");
+            console.error(err);
           }
-        } catch (err) {
-          toast.error("Invalid or expired verification link.");
-          console.error(err);
-        }
-        setLoading(false);
+          navigate("/");
+          setLoading(false);
+        }, 5000);
       }
     };
 
@@ -50,7 +41,7 @@ export const useEmailVerification = () => {
   const resendVerification = async () => {
     setChecking(true);
     try {
-      await sendEmailVerification(auth.currentUser, actionCodeSettings);
+      await SendVerificationMail(auth.currentUser);
       toast.info("Verification email resent.");
     } catch (err) {
       toast.error(`Error resending email: ${err.message}`);

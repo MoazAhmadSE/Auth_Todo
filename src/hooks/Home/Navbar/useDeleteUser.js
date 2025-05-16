@@ -59,16 +59,16 @@ export const useDeleteUser = () => {
         if (auth.currentUser?.uid !== user.uid) {
           await auth.signOut();
           toast.warn("You were signed out. Please log in again with the correct account.");
-          navigate("/login");
+          navigate("/");
         }
       }
 
       await deleteUser(user);
       await deleteDoc(doc(db, "tasks", user.uid));
       await deleteDoc(doc(db, "users", user.uid));
-      localStorage.clear();
+      // localStorage.clear();
       toast.success("Account Deleted Successfully!");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       if (error.code === "auth/user-mismatch") {
         toast.warn("User mismatch detected.");
