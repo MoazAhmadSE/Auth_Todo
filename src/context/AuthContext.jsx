@@ -83,9 +83,9 @@ export const AuthProvider = ({ children }) => {
       const user = result.user;
 
       if (!user.emailVerified) {
-          await SendVerificationMail(user);
-          toast.error("First Verify Your Email. Check Your Mailbox.");
-          signOut(auth);
+        await SendVerificationMail(user);
+        toast.error("First Verify Your Email. Check Your Mailbox.");
+        signOut(auth);
       } else {
         const userRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userRef);
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Login Error: ", error);
-      throw error;  
+      throw error;
     }
   };
 

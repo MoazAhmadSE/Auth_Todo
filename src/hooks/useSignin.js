@@ -7,6 +7,7 @@ export default function useSignin() {
   const [isEmpty, setIsEmpty] = useState(false);
   const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
   const [signinError, setSignInError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleForgetPassword = (resetPassword) => {
     if (!userEmail) {
@@ -34,6 +35,7 @@ export default function useSignin() {
       toast.error("Please verify you're not a robot.");
       return;
     }
+    setLoading(true);
     
     try {
       await loginWithEmailPassword(userEmail, userPassword);
@@ -49,6 +51,7 @@ export default function useSignin() {
     } finally {
       // resetCaptcha();
     }
+    setLoading(false);
   };
 
   return {
@@ -57,6 +60,8 @@ export default function useSignin() {
     isEmpty,
     isPasswordEmpty,
     signinError,
+    loading,
+    setLoading,
     setUserEmail,
     setUserPassword,
     setIsEmpty,

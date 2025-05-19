@@ -17,7 +17,8 @@ export const AddTasks = ({ userId }) => {
       />
       <Button
         className="tw-w-[20%] tw-h-[40px] tw-flex tw-items-center tw-justify-center tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-2xl tw-font-bold hover:tw-underline tw-duration-500 tw-rounded-l-none"
-        text={loading ? <Loading2 /> : "Add"}
+        // text={loading ? <Loading2 /> : "Add"}
+        text={"Add"}
         onClick={addTask}
       />
     </div>

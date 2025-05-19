@@ -18,6 +18,7 @@ export default function Login() {
     isEmpty,
     isPasswordEmpty,
     signinError,
+    loading,
     setUserEmail,
     setUserPassword,
     setIsEmpty,
@@ -105,14 +106,14 @@ export default function Login() {
           />
           <Button
             className={`tw-w-[100%] tw-bg-myYellow tw-text-myDark tw-border tw-border-myYellow tw-rounded-lg tw-text-lg tw-py-2 tw-font-bold hover:tw-underline tw-duration-500 tw-mt-4 tw-mb-2 ${
-              !isCaptchaValid
+              !isCaptchaValid || loading
                 ? "tw-cursor-not-allowed"
                 : "tw-cursor-pointer"
             }`}
             text={"Login"}
             type="button"
             onClick={onLoginClick}
-            // disabled={!isCaptchaValid}
+            disabled={loading}
           />
         </div>
         <div className="tw-flex tw-w-full tw-flex-nowrap md:tw-text-[1.5vw] lg:tw-text-[1vw]">
