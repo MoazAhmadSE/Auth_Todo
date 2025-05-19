@@ -8,7 +8,7 @@ export const useTaskData = (userId) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, "tasks", userId), (docSnap) => {
+    const unsub = onSnapshot(doc(db, "tasks", userId), { includeMetadataChanges: true } , (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
         setTodo(data.todo || []);
