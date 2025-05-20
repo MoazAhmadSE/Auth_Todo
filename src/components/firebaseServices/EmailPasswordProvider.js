@@ -10,6 +10,7 @@ import { SendVerificationMail } from "./SendVerificationMail";
 
 export const  EmailPasswordProvider = async (props) => {
   const { userName, userMail, userPassword, setLoading } = props;
+  console.log(setLoading);
   try {
     const result = await createUserWithEmailAndPassword(
       auth,

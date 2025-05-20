@@ -7,34 +7,11 @@ import ServiceProvider from "../components/firebaseServices/ServiceProviders";
 import { useSignup } from "../hooks/useSignup";
 import ReCAPTCHA from "react-google-recaptcha";
 import useCaptcha from "../hooks/useCaptcha";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";import { faEye } from '@fortawesome/free-solid-svg-icons';
+
 
 export default function Signup() {
-  const {
-    userName,
-    userMail,
-    userPassword,
-    confirmUserPassword,
-    isUserNameEmpty,
-    isUserMailEmpty,
-    validEmail,
-    isPasswordEmpty,
-    validPassword,
-    isConfirmPasswordEmpty,
-    passwordDidMatch,
-    loading,
-    setUserName,
-    setIsUserNameEmpty,
-    setUserMail,
-    setUserMailIsEmpty,
-    setValidEmail,
-    setUserPassword,
-    setIsPasswordEmpty,
-    setValidPassword,
-    setConfirmUserPassword,
-    setIsConfirmPasswordEmpty,
-    setPasswordDidMatch,
-    handleSubmit,
-  } = useSignup();
+  const { value, focusRef, setValue, handleSubmit } = useSignup();
 
   const { captchaRef, isCaptchaValid, handleCaptcha, getToken } = useCaptcha();
 
@@ -46,75 +23,95 @@ export default function Signup() {
           title={"Sign Up"}
         />
         <hr className="tw-border-2 tw-border-myYellow tw-w-full tw-my-5" />
-        {!loading ? (
+        {!value.loading ? (
           <>
             <div>
               <Input
+                ref={(el) => (focusRef.current.userName = el)}
                 className={`tw-input-style ${
-                  isUserNameEmpty ? "tw-border-red-600" : "tw-border-slate-500"
+                  !value.isUserNameValid
+                    ? "tw-border-red-600"
+                    : "tw-border-slate-500"
                 }`}
                 type="text"
                 placeholder="Enter User Name"
-                value={userName}
+                value={value.userName}
                 onChange={(e) => {
-                  setUserName(e.target.value);
-                  setIsUserNameEmpty(false);
+                  setValue((prev) => ({
+                    ...prev,
+                    userName: e.target.value,
+                    isUserNameValid: true,
+                  }));
                 }}
               />
               <Input
+                ref={(el) => (focusRef.current.userMail = el)}
                 className={`tw-input-style ${
-                  isUserMailEmpty ? "tw-border-red-600" : "tw-border-slate-500"
+                  !value.isEmailValid
+                    ? "tw-border-red-600"
+                    : "tw-border-slate-500"
                 }`}
                 type="email"
                 placeholder="Enter Email"
-                value={userMail}
+                value={value.userMail}
                 onChange={(e) => {
-                  setUserMail(e.target.value.trim());
-                  setUserMailIsEmpty(false);
-                  setValidEmail(true);
+                  setValue((prev) => ({
+                    ...prev,
+                    userMail: e.target.value,
+                    isEmailValid: true,
+                  }));
                 }}
               />
-              {!validEmail && (
+              {!value.isEmailValid && (
                 <div className="tw-text-red-500 tw-text-[1vw]">
                   Please enter a valid email address (e.g, name@example.com).
                 </div>
               )}
-              <Input
-                className={`tw-input-style ${
-                  !validPassword || !passwordDidMatch || isPasswordEmpty
-                    ? "tw-border-red-600"
-                    : "tw-border-slate-500"
-                }`}
-                type="password"
-                placeholder="Enter Password"
-                value={userPassword}
-                onChange={(e) => {
-                  setUserPassword(e.target.value.trim());
-                  setValidPassword(true);
-                  setIsPasswordEmpty(false);
-                }}
-              />
-              {!validPassword && (
+              <div className="tw-relative">
+                <Input
+                  ref={(el) => (focusRef.current.userPassword = el)}
+                  className={`tw-input-style ${
+                    !value.isPasswordValid || !value.isPasswordMatch
+                      ? "tw-border-red-600"
+                      : "tw-border-slate-500"
+                  }`}
+                  type="password"
+                  placeholder="Enter Password"
+                  value={value.userPassword}
+                  onChange={(e) => {
+                    setValue((prev) => ({
+                      ...prev,
+                      userPassword: e.target.value,
+                      isPasswordValid: true,
+                    }));
+                  }}
+                />
+                <FontAwesomeIcon icon={faEye} />
+              </div>
+              {!value.isPasswordValid && (
                 <div className="tw-text-red-500 tw-text-[1vw]">
                   Password must be at least 6 characters long.
                 </div>
               )}
               <Input
+                ref={(el) => (focusRef.current.isPasswordMatch = el)}
                 className={`tw-input-style ${
-                  !passwordDidMatch || isConfirmPasswordEmpty
+                  !value.isPasswordMatch
                     ? "tw-border-red-600"
                     : "tw-border-slate-500"
                 }`}
                 type="password"
                 placeholder="Confirm Password"
-                value={confirmUserPassword}
+                value={value.confirmUserPassword}
                 onChange={(e) => {
-                  setConfirmUserPassword(e.target.value.trim());
-                  setPasswordDidMatch(true);
-                  setIsConfirmPasswordEmpty(false);
+                  setValue((prev) => ({
+                    ...prev,
+                    confirmUserPassword: e.target.value,
+                    isPasswordMatch: true,
+                  }));
                 }}
               />
-              {!passwordDidMatch && (
+              {!value.isPasswordMatch && (
                 <div className="tw-text-red-500 md:tw-text-[1vw] lg:tw-text-[1vw]">
                   Password and Confirm Password not matched.
                 </div>
@@ -127,14 +124,21 @@ export default function Signup() {
                 ref={captchaRef}
               />
               <Button
-                className={`tw-w-full tw-h-[48px] tw-border tw-rounded-lg tw-text-lg tw-py-2 tw-duration-500 tw-mt-4 tw-mb-2 tw-bg-myYellow tw-border-myYellow tw-text-myDark hover:tw-underline tw-font-bold tw-flex tw-items-center tw-justify-center ${!isCaptchaValid ? "tw-cursor-not-allowed" : "tw-cursor-default"}`}
+                className={`tw-w-full tw-h-[48px] tw-border tw-rounded-lg tw-text-lg tw-py-2 tw-duration-500 tw-mt-4 tw-mb-2 tw-bg-myYellow tw-border-myYellow tw-text-myDark hover:tw-underline tw-font-bold tw-flex tw-items-center tw-justify-center ${
+                  !isCaptchaValid
+                    ? "tw-cursor-not-allowed"
+                    : "tw-cursor-default"
+                }`}
                 text={"Create"}
                 onClick={() => handleSubmit(getToken)}
               />
             </div>
             <div className="tw-flex tw-w-full tw-flex-nowrap md:tw-text-[1.5vw] lg:tw-text-[1vw] ">
               <h3>Already have an Account?</h3>
-              <Link to={"/login"} className="tw-text-myYellow tw-underline tw-ml-1 ">
+              <Link
+                to={"/login"}
+                className="tw-text-myYellow tw-underline tw-ml-1 "
+              >
                 Sign in
               </Link>
             </div>
